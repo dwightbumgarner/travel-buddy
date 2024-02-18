@@ -2,9 +2,9 @@ const firebase = require('firebase/compat/app');
 require('firebase/compat/auth');
 require('firebase/compat/firestore');
 
-const connectDB = () => {
-    try {
-        const firebaseConfig = {
+class FirebaseSingleton {
+    constructor() {
+        this.firebaseConfig = {
             apiKey: process.env.API_KEY,
             authDomain: process.env.AUTH_DOMAIN,
             projectId: process.env.PROJECT_ID,
@@ -14,20 +14,24 @@ const connectDB = () => {
             measurementId: process.env.MEASUREMENT_ID
         };
 
-        // Initialize Firebase
         if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        } else {
-            firebase.app(); // if already initialized, use that one
+            firebase.initializeApp(this.firebaseConfig);
+            console.log('Firebase initialized');
         }
 
-        console.log('Connected to Firebase');
-
-        return firebase.firestore();
-    } catch (err) {
-        console.error(err.message);
-        process.exit(1);
+        this.db = firebase.firestore();
     }
-};
 
-module.exports = connectDB;
+    static getInstance() {
+        if (!FirebaseSingleton.instance) {
+            FirebaseSingleton.instance = new FirebaseSingleton();
+        }
+        return FirebaseSingleton.instance;
+    }
+
+    getDatabase() {
+        return this.db;
+    }
+}
+
+module.exports = FirebaseSingleton;
