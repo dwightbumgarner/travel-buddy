@@ -67,7 +67,6 @@ module.exports.signin = async (req, res) => {
 
     console.log('fetched user info for', {email, password});
 
-    // Here you'd verify the password matches the hashed password stored in Firestore
     const isPasswordSame = await bcrypt.compare(password, user.password);
     if (!isPasswordSame) {
         console.log("user password unmatch for", {email, password});
@@ -80,7 +79,7 @@ module.exports.signin = async (req, res) => {
 
     console.log("created token for", {email, password});
 
-    res.status(200).json({ token });
+    res.status(200).json({ token, email, name: user.name });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });

@@ -1,18 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { ApplicationProvider } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+import AuthComponent from './components/AuthComponent';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApplicationProvider {...eva} theme={eva.light}>
+        <View style={styles.container}>
+          <AuthComponent />
+        </View>
+    </ApplicationProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    margin: "auto",
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
