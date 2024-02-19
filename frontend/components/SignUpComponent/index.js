@@ -1,20 +1,24 @@
 import { Alert, View, StyleSheet, Button } from 'react-native';
 import React, { useState } from 'react';
+import * as Updates from 'expo-updates';
 
 import { Input } from '@ui-kitten/components';
 
 import { SERVER_URL } from '../../consts';
+import SecureStorageManager from '../../storage';
 
-const SignInScreen = () => {
+const SignUpComponent = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const secureStorage = SecureStorageManager.getInstance();
 
-  const handleLogin = async () => {
-    console.log('triggered on press');
-    console.log(email, password);
+  const handleSignUp = async () => {
+    console.log('triggered handleSignUp');
+    console.log(email, password, name);
 
     try {
-      const response = await fetch(SERVER_URL + "/user/login", {
+      const response = await fetch(SERVER_URL + "/user/register", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -22,21 +26,28 @@ const SignInScreen = () => {
         body: JSON.stringify({
           email: email,
           password: password,
+          name: name,
         }),
       });
 
       const data = await response.json();
+      console.log(data);
+
       const resEmail = data.email;
       const resName = data.name;
       const resToken = data.token;
       console.log(resEmail, resName, resToken);
 
       if (resToken !== undefined) {
-        console.log('login successful');
-        Alert.alert("Login Successful", `Welcome ${resName}!`);
+        console.log('Sign Up successful');
+        await secureStorage.put('authToken', resToken);
+        await secureStorage.put('userName', resName);
+        await secureStorage.put('userEmail', resEmail);
+        Alert.alert("Sign Up Successful", `Welcome ${resName}!`);
+        await Updates.reloadAsync();
       } else {
-        console.log('login failed');
-        Alert.alert("Login Failed", response.message || "An error occurred");
+        console.log('Sign Up failed');
+        Alert.alert("Sign Up Failed", data.message || "An error occurred");
       }
     } catch (error) {
       console.error(error);
@@ -59,15 +70,21 @@ const SignInScreen = () => {
         onChangeText={(nextVal) => setPassword(nextVal)}
         secureTextEntry={true}
       />
+      <Input
+        placeholder="name"
+        autoCapitalize="none"
+        value={name}
+        onChangeText={(nextVal) => setName(nextVal)}
+      />
       <Button
-        onPress={() => handleLogin()}
-        title="Sign in"
+        onPress={() => handleSignUp()}
+        title="Sign up"
         color="blue"
       />
       <Button
-        title="Sign up"
+        onPress={() => navigation.navigate('login')}
+        title="Already have an account? Sign in!"
         type="Tertiary"
-        // onPress={() => navigation.navigate('register')}
       />
     </View>
   );
@@ -82,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default SignUpComponent;

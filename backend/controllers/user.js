@@ -38,7 +38,7 @@ module.exports.register = async (req, res) => {
 
       console.log("created token for", {email, password, name});
 
-      res.status(200).json({ token });
+      res.status(200).json({ token, email, name });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });
