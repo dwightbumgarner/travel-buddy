@@ -19,6 +19,8 @@ class FirebaseSingleton {
             console.log('Firebase initialized');
         }
 
+        console.log('created db');
+
         this.db = firebase.firestore();
     }
 
