@@ -43,7 +43,7 @@ const SignInScreen = ({ navigation }) => {
         await Updates.reloadAsync();
       } else {
         console.log('login failed');
-        Alert.alert("Login Failed", response.message || "An error occurred");
+        Alert.alert("Login Failed", data.message || "An error occurred");
       }
     } catch (error) {
       console.error(error);
