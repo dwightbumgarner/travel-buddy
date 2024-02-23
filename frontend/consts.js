@@ -1,3 +1,3 @@
-const SERVER_URL = "https://b1f3-2607-f010-2a7-1030-143b-d459-9ceb-22f5.ngrok-free.app/api"; //ngrok url
+const SERVER_URL = "https://c42a-2607-f010-2e9-15-f872-f987-728f-6caf.ngrok-free.app/api"; //ngrok url
 
 export {SERVER_URL};

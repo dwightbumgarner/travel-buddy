@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const FirebaseSingleton = require('../config/db');
+const FirebaseSingleton = require('../third_party/db');
 const firebaseInstance = FirebaseSingleton.getInstance();
 const db = firebaseInstance.getDatabase();
 
