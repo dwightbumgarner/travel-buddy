@@ -2,12 +2,12 @@ const fs = require('fs');
 const GCPLandmarkSingleton = require('../third_party/google_lens');
 
 module.exports.detectLandmark = async (req, res) => {
-    const landmarkDetector = GCPLandmarkSingleton.getInstance();
-    const filePath = req.file.path;
-
-    console.log('recevied a landmark detection req with file', req.file);
-
     try {
+        console.log('recevied a landmark detection req', req);
+
+        const landmarkDetector = GCPLandmarkSingleton.getInstance();
+        const filePath = req.file.path;
+
         const result = await landmarkDetector.detectLandmark(filePath);
         const landmarks = result.landmarkAnnotations.map(annotation => annotation.description);
 

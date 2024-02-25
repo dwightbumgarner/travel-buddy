@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LogInComponent from '../LogInComponent';
 import SignUpComponent from '../SignUpComponent';
 import UserDetailComponent from '../UserComponent';
+import UploadPhotoScreen from '../UploadPhotoComponent';
 
 import SecureStorageManager from '../../storage';
 
@@ -81,13 +82,22 @@ const HomeScreen = () => {
                 ),
             }}
         />
+        <Tab.Screen
+            name="detect"
+            component={UploadPhotoScreen}
+            options={{
+                tabBarIcon: (tabInfo) => (
+                <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
+                ),
+            }}
+        />
     </Tab.Navigator>
   );
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
         {authToken !== null ? (
-          <Stack.Screen name="UserFlow" component={ContentFlowNavigator} />
+          <Stack.Screen name="ContentFlow" component={ContentFlowNavigator} />
         ) : (
           <Stack.Screen name="AuthFlow" component={AuthFlowNavigator} />
         )}
