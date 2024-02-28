@@ -7,6 +7,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LogInComponent from '../LogInComponent';
 import SignUpComponent from '../SignUpComponent';
 import UserDetailComponent from '../UserComponent';
+import ChatComponent from '../ChatComponent';
+
 
 import SecureStorageManager from '../../storage';
 
@@ -78,6 +80,15 @@ const HomeScreen = () => {
             options={{
                 tabBarIcon: (tabInfo) => (
                 <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
+                ),
+            }}
+        />
+        <Tab.Screen
+            name="chat"
+            component={ChatComponent}
+            options={{
+                tabBarIcon: (tabInfo) => (
+                    <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
                 ),
             }}
         />
