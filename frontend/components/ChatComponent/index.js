@@ -1,10 +1,41 @@
-import React, {useState} from 'react';
+import React, { useState, useCallback } from 'react';
 import {View, TextInput, Button, Text, ScrollView, Alert, StyleSheet} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+
 import { SERVER_URL } from '../../consts';
+import SecureStorageManager from '../../storage';
 
 const ChatScreen = () => {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
+    const [detectedLandmark, setDetectedLandmark] = useState(null);
+    const [authToken, setAuthToken] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const secureStorage = SecureStorageManager.getInstance();
+
+    const checkSecureStorage = async () => {
+        try {
+          const token = await secureStorage.get('authToken');
+          setAuthToken(token);
+
+          const landmark = await secureStorage.get('detectedLandmark');
+          setDetectedLandmark(landmark);
+
+          setMessages(prevMessages => [...prevMessages, { role: 'user', content: `Please tell me a little bit about ${landmark}. Thank you.` }]);
+          await sendMessage();
+        } catch (error) {
+          console.log('Error fetching from storage:', error);
+        } finally {
+          setLoading(false);
+        }
+    };
+
+    useFocusEffect(
+        useCallback(() => {
+            checkSecureStorage();
+        }, [])
+    );
 
     const sendMessage = async () => {
         if (!userInput) {
@@ -21,6 +52,7 @@ const ChatScreen = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'authentication': authToken,
             },
             body: JSON.stringify({
                 conversation: conversation,
@@ -31,6 +63,21 @@ const ChatScreen = () => {
         setUserInput('');
     };
 
+    if (loading) {
+        return (
+          <View style={styles.center}>
+            <Text>Loading...</Text>
+          </View>
+        );
+    }
+
+    if (detectedLandmark === null) {
+        return (
+            <View style={styles.center}>
+              <Text>You need to open detect screen to detect a landmark before you can learn about it</Text>
+            </View>
+        );
+    }
 
     return (
         <View style={styles.container}>
