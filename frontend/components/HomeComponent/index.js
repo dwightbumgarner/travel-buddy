@@ -8,7 +8,7 @@ import LogInComponent from '../LogInComponent';
 import SignUpComponent from '../SignUpComponent';
 import UserDetailComponent from '../UserComponent';
 import UploadPhotoScreen from '../UploadPhotoComponent';
-import ChatComponent from '../ChatComponent';
+import NearbyPOIComponent from "../NearbyPOIComponent";
 
 
 import SecureStorageManager from '../../storage';
@@ -94,8 +94,8 @@ const HomeScreen = () => {
             }}
         />
         <Tab.Screen
-            name="chat"
-            component={ChatComponent}
+            name="nearby"
+            component={NearbyPOIComponent}
             options={{
                 tabBarIcon: (tabInfo) => (
                     <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
