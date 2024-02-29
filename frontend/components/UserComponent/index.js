@@ -36,6 +36,7 @@ const UserDetailScreen = ({ navigation }) => {
         await secureStorage.delete('authToken');
         await secureStorage.delete('userName');
         await secureStorage.delete('userEmail');
+        await secureStorage.delete('detectedLandmark');
         await Updates.reloadAsync();
     } catch (error) {
       console.error(error);

@@ -32,6 +32,12 @@
         {
           "photosPermission": "The app accesses your photos to let you upload them to travel buddy."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
       ]
     ]
   }
