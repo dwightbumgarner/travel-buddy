@@ -18,12 +18,32 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # Setup for Node.js (common step)
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+        # Removed cache: 'npm' to disable automatic cache detection
+
+    # Cache dependencies manually
+    - name: Get npm cache directory
+      id: npm-cache
+      run: echo "::set-output name=dir::$(npm config get cache)"
+
+    - name: Cache frontend dependencies
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.npm-cache.outputs.dir }}
+        key: ${{ runner.os }}-frontend-${{ hashFiles('CS130/frontend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-frontend-
+    
+    - name: Cache backend dependencies
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.npm-cache.outputs.dir }}
+        key: ${{ runner.os }}-backend-${{ hashFiles('CS130/backend/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-backend-
 
     # Frontend
     - name: Install and build frontend
