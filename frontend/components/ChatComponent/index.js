@@ -22,8 +22,21 @@ const ChatScreen = () => {
           const landmark = await secureStorage.get('detectedLandmark');
           setDetectedLandmark(landmark);
 
-          setMessages(prevMessages => [...prevMessages, { role: 'user', content: `Please tell me a little bit about ${landmark}. Thank you.` }]);
-          await sendMessage();
+          const response = await fetch(SERVER_URL + "/ai/chat", {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'authentication': authToken,
+              },
+              body: JSON.stringify({
+                  conversation: [{ role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }],
+              }),
+          });
+          const data = await response.json();
+          console.log(data.response);
+          if (data.response) {
+              setMessages(prevMessages => [...prevMessages, { role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }, { role: 'assistant', content: data.response }]);
+          }
         } catch (error) {
           console.log('Error fetching from storage:', error);
         } finally {
@@ -34,11 +47,11 @@ const ChatScreen = () => {
     useFocusEffect(
         useCallback(() => {
             checkSecureStorage();
-        }, [])
+        }, [loading])
     );
 
     const sendMessage = async () => {
-        if (!userInput) {
+        if (!userInput ) {
             Alert.alert('You typed nothing!');
             return;
         }
@@ -46,6 +59,7 @@ const ChatScreen = () => {
         console.log('sending message to AI');
         const conversation = messages.slice();
         conversation.push({ role: 'user', content: userInput });
+        console.log(conversation);
 
         setMessages(prevMessages => [...prevMessages, { role: 'user', content: userInput }]);
         const response = await fetch(SERVER_URL + "/ai/chat", {

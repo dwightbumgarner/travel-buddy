@@ -28,6 +28,18 @@ class ChatGPTAPISingleton {
 
         return completion.data.choices[0].message.content;
     }
+
+    async getNearbyPOIList(latitude, longitude){
+        const prompt = `Please provide 5 top rated tourist attractions near location { latitude: ${latitude}, longitude: ${longitude} }, respond only with a list.`;
+        const completion = await ChatGPTAPISingleton.client.createChatCompletion({
+            model: 'gpt-3.5-turbo',
+            messages: [{role: 'user', content: prompt}],
+        });
+
+        const response = completion.data.choices[0].message.content;
+        const regex = new RegExp(/^([\d]\. )(.*)$/gm);
+        return response.match(regex);
+    }
 }
 
 module.exports = ChatGPTAPISingleton;
