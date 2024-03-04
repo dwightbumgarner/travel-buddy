@@ -1,5 +1,8 @@
 const fs = require('fs');
 const GCPLandmarkSingleton = require('../third_party/google_lens');
+const FirebaseSingleton = require('../third_party/db');
+const firebaseInstance = FirebaseSingleton.getInstance();
+const db = firebaseInstance.getDatabase();
 
 /**
  * Converts degrees to radians
@@ -65,6 +68,39 @@ module.exports.detectLandmark = async (req, res) => {
         });
 
         console.log('Close landmarks:', closeLandmarks);
+
+        // Create new forum if not exist
+        if (closeLandmarks.length > 0) {
+            const forumLandmark = closeLandmarks[0];
+
+            const forumsRef = db.collection('forums').doc();
+            const Snapshot = await forumsRef.where('name', '==', forumLandmark).limit(1).get();
+            
+            let forumDocId;
+
+            // Check if the forum (landmark) exists, if not create one
+            if (Snapshot.empty) {
+                // No existing forum found, create a new one
+                const newForumRef = forumsRef.doc(); // Automatically generate a new document ID
+                await newForumRef.set({
+                    name: forumLandmark,
+                    totalScore: 0,
+                    totalUsers: 0,
+                    // Don't set an optional rating initially
+                });
+                forumDocId = newForumRef.id;
+            } else {
+                forumDocId = Snapshot.docs[0].id;
+            }
+
+            // Now check if this user has access to this forum in their AccessibleForums subcollection
+            const accessibleForumsRef = db.collection('users').doc(req.user.id).collection('AccessibleForums').doc(forumDocId);
+            const accessibleForumDoc = await accessibleForumsRef.get();
+
+            if (!accessibleForumDoc.exists) {
+                await accessibleForumsRef.set({ hasAccess: true }); 
+            }
+        }
 
         res.status(200).json({landmarks: closeLandmarks});
     } catch (error) {
