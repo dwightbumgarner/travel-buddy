@@ -9,9 +9,10 @@ import SignUpComponent from '../SignUpComponent';
 import UserDetailComponent from '../UserComponent';
 import UploadPhotoScreen from '../UploadPhotoComponent';
 import NearbyPOIComponent from "../NearbyPOIComponent";
-
+import ChatComponent from "../ChatComponent";
 
 import SecureStorageManager from '../../storage';
+import chatComponent from "../ChatComponent";
 
 const HomeScreen = () => {
   const [authToken, setAuthToken] = useState(null);
@@ -100,6 +101,16 @@ const HomeScreen = () => {
                 tabBarIcon: (tabInfo) => (
                     <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
                 ),
+            }}
+        />
+        <Tab.Screen
+            name="chat"
+            component={chatComponent}
+            options={{
+                tabBarStyle: {
+                    display: "none",
+                },
+                tabBarButton: () => null,
             }}
         />
     </Tab.Navigator>
