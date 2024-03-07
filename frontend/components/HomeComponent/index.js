@@ -52,22 +52,27 @@ const HomeScreen = () => {
   }
 
   const AuthFlowNavigator = () => (
-    <Tab.Navigator>
+    <Tab.Navigator
+    screenOptions={{
+      tabBarActiveTintColor: 'green',
+      tabBarInactiveTintColor: 'black',
+    }}
+  >
         <Tab.Screen
-            name="login"
+            name="Log In"
             component={LogInComponent}
             options={{
                 tabBarIcon: (tabInfo) => (
-                <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
+                <Ionicons name="log-in-outline" size={tabSize} />
                 ),
             }}
         />
         <Tab.Screen
-            name="register"
+            name="Sign Up"
             component={SignUpComponent}
             options={{
                 tabBarIcon: (tabInfo) => (
-                    <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
+                    <Ionicons name="person-add-outline" size={tabSize} />
                 ),
             }}
         />
@@ -75,31 +80,37 @@ const HomeScreen = () => {
   );
 
   const ContentFlowNavigator = () => (
-    <Tab.Navigator>
+    <Tab.Navigator
+    screenOptions={{
+      tabBarActiveTintColor: 'green',
+      tabBarInactiveTintColor: 'black',
+    }}
+  
+    >
         <Tab.Screen
-            name="user"
+            name="Profile"
             component={UserDetailComponent}
             options={{
                 tabBarIcon: (tabInfo) => (
-                <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
+                <Ionicons name="person-outline" size={tabSize} />
                 ),
             }}
         />
         <Tab.Screen
-            name="detect"
+            name="Detect POI"
             component={UploadPhotoScreen}
             options={{
                 tabBarIcon: (tabInfo) => (
-                <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
+                <Ionicons name="camera-outline" size={tabSize}/>
                 ),
             }}
         />
         <Tab.Screen
-            name="nearby"
+            name="Find Nearby POI's"
             component={NearbyPOIComponent}
             options={{
                 tabBarIcon: (tabInfo) => (
-                    <Ionicons name="person-add-outline" size={tabSize} color={tabInfo.tintColor} />
+                    <Ionicons name="search-outline" size={tabSize}  />
                 ),
             }}
         />
@@ -116,6 +127,7 @@ const HomeScreen = () => {
     </Tab.Navigator>
   );
 
+  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
         {authToken !== null ? (

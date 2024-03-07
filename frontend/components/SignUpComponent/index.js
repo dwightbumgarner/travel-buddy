@@ -1,4 +1,4 @@
-import { Alert, View, StyleSheet, Button } from 'react-native';
+import { Alert, View, StyleSheet, Button, TouchableOpacity, Text } from 'react-native';
 import React, { useState } from 'react';
 import * as Updates from 'expo-updates';
 
@@ -58,44 +58,68 @@ const SignUpComponent = ({ navigation }) => {
   return (
     <View style={styles.root}>
       <Input
-        placeholder="email"
+        placeholder="Email"
         autoCapitalize="none"
         value={email}
         onChangeText={(nextVal) => setEmail(nextVal)}
+        style={styles.input}
+
       />
       <Input
-        placeholder="password"
+        placeholder="Password"
         autoCapitalize="none"
         value={password}
         onChangeText={(nextVal) => setPassword(nextVal)}
         secureTextEntry={true}
+        style={styles.input}
+
       />
       <Input
-        placeholder="name"
+        placeholder="Name"
         autoCapitalize="none"
         value={name}
         onChangeText={(nextVal) => setName(nextVal)}
+        style={styles.input}
+
       />
-      <Button
-        onPress={() => handleSignUp()}
-        title="Sign up"
-        color="blue"
-      />
-      <Button
-        onPress={() => navigation.navigate('login')}
-        title="Already have an account? Sign in!"
-        type="Tertiary"
-      />
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => handleSignUp()}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('login')}>
+        <Text style={styles.buttonText}>Already have an account? Sign in!</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   root: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: "50%",
-    width: '100%',
-    height: '100%',
+    paddingHorizontal: 20,
+  },
+  buttonContainer: {
+    backgroundColor: 'green',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  input: {
+    borderRadius: 10, // Adjust the value to change the roundness of the corners
+    borderWidth: 1, // Add border to give it a cleaner look
+    borderColor: 'gray', // Change the border color if needed
+    paddingHorizontal: 10, // Add some padding for better readability
+    marginBottom: 10, // Add margin bottom to separate inputs
   },
 });
 
