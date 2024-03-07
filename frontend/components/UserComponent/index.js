@@ -33,12 +33,6 @@ const UserDetailScreen = ({ navigation }) => {
     checkAuthToken();
   }, []);
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerTitle: `${userName}'s Profile`
-    });
-  }, [userName]);
-
   const handleLogOut = async () => {
     console.log('triggered handleLogOut');
 
