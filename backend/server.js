@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/user', require('./routes/user'));
 app.use('/api/landmark', require('./routes/landmark_detection'));
 app.use('/api/ai', require('./routes/ai_chat'));
+app.use('/api/forum', require('./routes/forum'));
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
