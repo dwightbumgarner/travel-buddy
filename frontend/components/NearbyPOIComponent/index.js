@@ -83,7 +83,7 @@ const NearbyPOIScreen = ({ navigation }) => {
     if (locationErrMsg === null && location === null) {
         return (
             <View style={styles.center}>
-                <Text>You have to enable GPS tracking to use nearby POI feature</Text>
+                <Text>You have to enable GPS tracking to use the nearby POI's feature</Text>
             </View>
         )
     }
@@ -91,7 +91,7 @@ const NearbyPOIScreen = ({ navigation }) => {
     if (POIList === null) {
         return (
             <View style={styles.center}>
-                <Text>Sorry, we encounter an error fetching POI list for you</Text>
+                <Text>Sorry! We encountered an error fetching the nearby POI's.</Text>
             </View>
         )
     }
