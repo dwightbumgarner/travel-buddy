@@ -16,6 +16,37 @@ module.exports.getAccessForums = async (req, res) => {
     }
 };
 
+module.exports.getComment = async (req, res) => {
+    const { forumId } = req.body;
+    console.log('Get all comments from ', { forumId });
+
+    try {
+        const forumDocRef = db.collection('forums').doc(forumId);
+        const forumDoc = await forumDocRef.get();
+
+        // Check if forum exists
+        if (!forumDoc.exists) {
+            return res.status(404).json({ error: 'Forum not found' });
+        }
+
+        // Retrieve all comments for the forum
+        const commentsSnapshot = await forumDocRef.collection('comments').get();
+        const comments = [];
+
+        commentsSnapshot.forEach((doc) => {
+            comments.push({
+                id: doc.id,
+                data: doc.data()
+            });
+        });
+
+        return res.status(200).json({ comments });
+    } catch (error) {
+        console.log('Error retrieving comments: ', error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 
 module.exports.addComment = async (req, res) => {
     const { forumId, content } = req.body;
@@ -23,7 +54,7 @@ module.exports.addComment = async (req, res) => {
     console.log('received comment', { content, userId });
 
     try {
-        const forumDocRef = db.collection('forum').doc(forumId);
+        const forumDocRef = db.collection('forums').doc(forumId);
         const forumDoc = await forumDocRef.get();
 
         if (!forumDoc.exists) {
@@ -41,7 +72,7 @@ module.exports.addComment = async (req, res) => {
 
         return res.status(200).json({ message: 'Comment added successfully', comment: content, userId: userId });
     } catch (error) {
-        console.log(error);
+        console.log('Error adding comment:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -50,6 +81,12 @@ module.exports.addOrUpdateForumRating = async (req, res) => {
     const { forumId, rating } = req.body;
     const userId = req.user.id; 
     console.log('received update rating request', { forumId, userId, rating });
+
+    // Check if rating is within the valid range (1 to 5)
+    if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+        return res.status(400).json({ error: 'Invalid rating. Rating must be an integer between 1 and 5' });
+    }
+
     try {
         // Check if the forum exists
         const forumRef = db.collection('forums').doc(forumId);

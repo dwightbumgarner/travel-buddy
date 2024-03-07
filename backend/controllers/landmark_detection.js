@@ -73,7 +73,7 @@ module.exports.detectLandmark = async (req, res) => {
         if (closeLandmarks.length > 0) {
             const forumLandmark = closeLandmarks[0];
 
-            const forumsRef = db.collection('forums').doc();
+            const forumsRef = db.collection('forums');
             const Snapshot = await forumsRef.where('name', '==', forumLandmark).limit(1).get();
             
             let forumDocId;
@@ -92,6 +92,8 @@ module.exports.detectLandmark = async (req, res) => {
             } else {
                 forumDocId = Snapshot.docs[0].id;
             }
+
+            console.log('Current forum: ', forumDocId);
 
             // Now check if this user has access to this forum in their AccessibleForums subcollection
             const accessibleForumsRef = db.collection('users').doc(req.user.id).collection('AccessibleForums').doc(forumDocId);
