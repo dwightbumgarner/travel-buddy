@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {View, TextInput, Button, Text, ScrollView, Alert, StyleSheet} from 'react-native';
+import { View, TextInput, Button, Text, ScrollView, Alert, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { SERVER_URL } from '../../consts';
@@ -16,31 +16,31 @@ const ChatScreen = () => {
 
     const checkSecureStorage = async () => {
         try {
-          const token = await secureStorage.get('authToken');
-          setAuthToken(token);
+            const token = await secureStorage.get('authToken');
+            setAuthToken(token);
 
-          const landmark = await secureStorage.get('detectedLandmark');
-          setDetectedLandmark(landmark);
+            const landmark = await secureStorage.get('detectedLandmark');
+            setDetectedLandmark(landmark);
 
-          const response = await fetch(SERVER_URL + "/ai/chat", {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'authentication': authToken,
-              },
-              body: JSON.stringify({
-                  conversation: [{ role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }],
-              }),
-          });
-          const data = await response.json();
-          console.log(data.response);
-          if (data.response) {
-              setMessages(prevMessages => [...prevMessages, { role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }, { role: 'assistant', content: data.response }]);
-          }
+            const response = await fetch(SERVER_URL + "/ai/chat", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authentication': authToken,
+                },
+                body: JSON.stringify({
+                    conversation: [{ role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }],
+                }),
+            });
+            const data = await response.json();
+            console.log(data.response);
+            if (data.response) {
+                setMessages(prevMessages => [...prevMessages, { role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }, { role: 'assistant', content: data.response }]);
+            }
         } catch (error) {
-          console.log('Error fetching from storage:', error);
+            console.log('Error fetching from storage:', error);
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -51,7 +51,7 @@ const ChatScreen = () => {
     );
 
     const sendMessage = async () => {
-        if (!userInput ) {
+        if (!userInput) {
             Alert.alert('You typed nothing!');
             return;
         }
@@ -79,30 +79,30 @@ const ChatScreen = () => {
 
     if (loading) {
         return (
-          <View style={styles.center}>
-            <Text>Loading...</Text>
-          </View>
+            <View style={styles.center}>
+                <Text>Loading...</Text>
+            </View>
         );
     }
 
     if (detectedLandmark === null) {
         return (
             <View style={styles.center}>
-              <Text>You need to open detect screen to detect a landmark before you can learn about it</Text>
+                <Text>You need to open detect screen to detect a landmark before you can learn about it</Text>
             </View>
         );
     }
 
     return (
         <View style={styles.container}>
-            <ScrollView>
-            <View style={styles.chatArea}>
+            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 {messages.map((msg, index) => (
-                    <Text key={index} style={msg.role === 'user' ? styles.userMessage : styles.botMessage}>
-                        {msg.content}
-                    </Text>
+                    <View key={index} style={msg.role === 'user' ? styles.userMessageBubble : styles.botMessageBubble}>
+                        <Text style={styles.messageText}>
+                            {msg.content}
+                        </Text>
+                    </View>
                 ))}
-            </View>
             </ScrollView>
             <View style={styles.inputArea}>
                 <TextInput
@@ -122,10 +122,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
     },
-    chatArea: {
-        padding: 16,
-        backgroundColor: '#f0f0f0',
-        minHeight: 300,
+    scrollViewContainer: {
+        padding: 10,
     },
     inputArea: {
         flexDirection: 'row',
@@ -139,14 +137,33 @@ const styles = StyleSheet.create({
         padding: 8,
         borderColor: '#ccc',
         borderWidth: 1,
+        borderRadius: 20,
     },
-    userMessage: {
-        textAlign: 'right',
-        color: 'blue',
+    userMessageBubble: {
+        backgroundColor: '#DCF8C6',
+        padding: 10,
+        borderRadius: 20,
+        marginVertical: 5,
+        maxWidth: '80%',
+        alignSelf: 'flex-end',
+        marginRight: 10,
     },
-    botMessage: {
-        textAlign: 'left',
-        color: 'green',
+    botMessageBubble: {
+        backgroundColor: '#ECECEC',
+        padding: 10,
+        borderRadius: 20,
+        marginVertical: 5,
+        maxWidth: '80%',
+        alignSelf: 'flex-start',
+        marginLeft: 10,
+    },
+    messageText: {
+        fontSize: 16,
+    },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
