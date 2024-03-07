@@ -1,4 +1,4 @@
-import { Alert, View, StyleSheet, Button, Text } from 'react-native';
+import { Alert, View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as Updates from 'expo-updates';
 
@@ -7,6 +7,7 @@ import SecureStorageManager from '../../storage';
 const UserDetailScreen = ({ navigation }) => {
   const [authToken, setAuthToken] = useState(null);
   const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
   const [loading, setLoading] = useState(true);
 
   const secureStorage = SecureStorageManager.getInstance();
@@ -19,6 +20,9 @@ const UserDetailScreen = ({ navigation }) => {
 
         const name = await secureStorage.get('userName');
         setUserName(name);
+
+        const email = await secureStorage.get('userEmail');
+        setUserEmail(email);
       } catch (error) {
         console.log('Error fetching auth token:', error);
       } finally {
@@ -29,15 +33,21 @@ const UserDetailScreen = ({ navigation }) => {
     checkAuthToken();
   }, []);
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: `${userName}'s Profile`
+    });
+  }, [userName]);
+
   const handleLogOut = async () => {
     console.log('triggered handleLogOut');
 
     try {
-        await secureStorage.delete('authToken');
-        await secureStorage.delete('userName');
-        await secureStorage.delete('userEmail');
-        await secureStorage.delete('detectedLandmark');
-        await Updates.reloadAsync();
+      await secureStorage.delete('authToken');
+      await secureStorage.delete('userName');
+      await secureStorage.delete('userEmail');
+      await secureStorage.delete('detectedLandmark');
+      await Updates.reloadAsync();
     } catch (error) {
       console.error(error);
       Alert.alert("Login Error", "An unexpected error occurred.");
@@ -53,22 +63,40 @@ const UserDetailScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.root}>
-      <Button
-        onPress={() => handleLogOut()}
-        title="Log out"
-        color="blue"
-      />
+    <View style={styles.container}>
+      <Text style={styles.text}>Name: {userName}</Text> 
+      <Text style={styles.text}>Email: {userEmail}</Text> 
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogOut()}>
+        <Text style={styles.buttonText}>Log out</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
+const windowWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
-  root: {
+  container: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: "50%",
-    width: '100%',
-    height: '100%',
+    paddingHorizontal: 20,
+  },
+  text: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    backgroundColor: 'green',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
