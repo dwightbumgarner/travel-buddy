@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { View, TextInput, Button, Text, ScrollView, Alert, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -13,6 +13,7 @@ const ChatScreen = () => {
     const [loading, setLoading] = useState(true);
 
     const secureStorage = SecureStorageManager.getInstance();
+    const scrollViewRef = useRef();
 
     const checkSecureStorage = async () => {
         try {
@@ -75,6 +76,7 @@ const ChatScreen = () => {
         const data = await response.json();
         setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: data.response }]);
         setUserInput('');
+        scrollViewRef.current.scrollToEnd({ animated: true });
     };
 
     if (loading) {
@@ -85,17 +87,13 @@ const ChatScreen = () => {
         );
     }
 
-    if (detectedLandmark === null) {
-        return (
-            <View style={styles.center}>
-                <Text>You need to open detect screen to detect a landmark before you can learn about it</Text>
-            </View>
-        );
-    }
-
     return (
         <View style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+            <ScrollView
+                contentContainerStyle={styles.scrollViewContainer}
+                ref={scrollViewRef}
+                onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+            >
                 {messages.map((msg, index) => (
                     <View key={index} style={msg.role === 'user' ? styles.userMessageBubble : styles.botMessageBubble}>
                         <Text style={styles.messageText}>
@@ -119,8 +117,8 @@ const ChatScreen = () => {
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
         flex: 1,
-        justifyContent: 'flex-end',
     },
     scrollViewContainer: {
         padding: 10,

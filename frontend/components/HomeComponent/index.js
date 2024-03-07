@@ -3,36 +3,36 @@ import { Text, View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useFonts } from 'expo-font';
 
 import LogInComponent from '../LogInComponent';
 import SignUpComponent from '../SignUpComponent';
 import UserDetailComponent from '../UserComponent';
 import UploadPhotoScreen from '../UploadPhotoComponent';
 import NearbyPOIComponent from "../NearbyPOIComponent";
-import ChatComponent from "../ChatComponent";
-
 import SecureStorageManager from '../../storage';
 import chatComponent from "../ChatComponent";
 
 const HomeScreen = () => {
   const [authToken, setAuthToken] = useState(null);
-  const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(true);
 
   const secureStorage = SecureStorageManager.getInstance();
   const Tab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
 
-  const tabSize = 22;
+  const [fontsLoaded] = useFonts({
+    MadimiOne: require('../../assets/fonts/MadimiOne-Regular.ttf'), 
+  });
+
+  const tabSize = 26;
+  const focusedTabSize = 30;
 
   useEffect(() => {
     const checkAuthToken = async () => {
       try {
         const token = await secureStorage.get('authToken');
         setAuthToken(token);
-
-        const name = await secureStorage.get('userName');
-        setUserName(name);
       } catch (error) {
         console.log('Error fetching auth token:', error);
       } finally {
@@ -43,7 +43,7 @@ const HomeScreen = () => {
     checkAuthToken();
   }, []);
 
-  if (loading) {
+  if (!fontsLoaded || loading) {
     return (
       <View style={styles.center}>
         <Text>Loading...</Text>
@@ -52,39 +52,31 @@ const HomeScreen = () => {
   }
 
   const AuthFlowNavigator = () => (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'green',
+        tabBarInactiveTintColor: 'black',
+        headerShown: false,
+      }}
+    >
       <Tab.Screen
-        name="login"
-        component={LogInComponent}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <Ionicons
-              name={focused ? 'log-in' : 'log-in-outline'}
-              size={tabSize}
-              color={color}
-            />
-          ),
-          tabBarStyle: {
-            display: 'none',
-          },
-          headerShown: false, // Hide the name of the screen
+          name="login"
+          component={LogInComponent}
+          options={{
+            tabBarStyle: {
+                display: "none",
+            },
+            tabBarButton: () => null,
         }}
       />
       <Tab.Screen
-        name="register"
-        component={SignUpComponent}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <Ionicons
-              name={focused ? 'person-add' : 'person-add-outline'}
-              size={tabSize}
-              color={color}
-            />
-          ),
-          tabBarStyle: {
-            display: 'none',
-          },
-          headerShown: false, // Hide the name of the screen
+          name="register"
+          component={SignUpComponent}
+          options={{
+            tabBarStyle: {
+                display: "none",
+            },
+            tabBarButton: () => null,
         }}
       />
     </Tab.Navigator>
@@ -92,99 +84,62 @@ const HomeScreen = () => {
 
   const ContentFlowNavigator = () => (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarActiveTintColor: 'green',
         tabBarInactiveTintColor: 'black',
-        tabBarStyle: {
-          backgroundColor: 'white',
+        tabBarLabelStyle: { display: 'none' },
+        headerShown: false,
+        tabBarIcon: ({ color, size, focused }) => {
+          let iconName;
+
+          if (route.name === 'Profile') {
+            iconName = focused ? 'person-sharp' : 'person-outline';
+          } else if (route.name === 'Detect POI') {
+            iconName = focused ? 'camera-sharp' : 'camera-outline';
+          } else if (route.name === 'Find Nearby POI\'s') {
+            iconName = focused ? 'search-sharp' : 'search-outline';
+          }
+          const iconSize = focused ? focusedTabSize : tabSize;
+          return <Ionicons name={iconName} size={iconSize} color={color} />;
         },
-      }}
+      })}
     >
-      <Tab.Screen
-        name="Profile"
-        component={UserDetailComponent}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <Ionicons
-              name={focused ? 'person' : 'person-outline'}
-              size={tabSize}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Detect POI"
-        component={UploadPhotoScreen}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <Ionicons
-              name={focused ? 'camera' : 'camera-outline'}
-              size={tabSize}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Find Nearby POI's"
-        component={NearbyPOIComponent}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <Ionicons
-              name={focused ? 'search' : 'search-outline'}
-              size={tabSize}
-              color={color}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="chat"
-        component={chatComponent}
-        options={{
-          tabBarStyle: {
-            display: 'none',
-          },
-          tabBarButton: () => null,
-        }}
-      />
+      <Tab.Screen name="Profile" component={UserDetailComponent} />
+      <Tab.Screen name="Detect POI" component={UploadPhotoScreen} />
+      <Tab.Screen name="Find Nearby POI's" component={NearbyPOIComponent} />
+      <Tab.Screen name="chat" component={chatComponent} options={{ tabBarStyle: { display: "none" }, tabBarButton: () => null }} />
     </Tab.Navigator>
   );
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator>
       {authToken !== null ? (
-        <Stack.Screen name="ContentFlow" component={ContentFlowNavigator} />
+        <Stack.Screen 
+          name="ContentFlow" 
+          component={ContentFlowNavigator} 
+          options={{
+            headerShown: true,
+            headerTitle: "TravelBuddy",
+            headerTitleStyle: {
+              fontFamily: 'MadimiOne',
+              fontSize: 25,
+            },
+          }} 
+        />
       ) : (
-        <Stack.Screen name="AuthFlow" component={AuthFlowNavigator} />
+        <Stack.Screen 
+          name="AuthFlow" 
+          component={AuthFlowNavigator} 
+          options={{
+            headerShown: false,
+          }}
+        />
       )}
     </Stack.Navigator>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white', // Ensures that the area not covered by the navbar and mainSection also has a white background
-  },
-  navbar: {
-    backgroundColor: 'blue',
-    width: '100%',
-    padding: 15,
-    alignItems: 'center',
-  },
-  navbarText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  mainSection: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   center: {
     flex: 1,
     justifyContent: 'center',
