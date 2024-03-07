@@ -62,6 +62,8 @@ const SignUpComponent = ({ navigation }) => {
         autoCapitalize="none"
         value={email}
         onChangeText={(nextVal) => setEmail(nextVal)}
+        style={styles.input}
+
       />
       <Input
         placeholder="Password"
@@ -69,12 +71,16 @@ const SignUpComponent = ({ navigation }) => {
         value={password}
         onChangeText={(nextVal) => setPassword(nextVal)}
         secureTextEntry={true}
+        style={styles.input}
+
       />
       <Input
         placeholder="Name"
         autoCapitalize="none"
         value={name}
         onChangeText={(nextVal) => setName(nextVal)}
+        style={styles.input}
+
       />
       <TouchableOpacity style={styles.buttonContainer} onPress={() => handleSignUp()}>
         <Text style={styles.buttonText}>Sign Up</Text>
@@ -107,6 +113,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
+  },
+  input: {
+    borderRadius: 10, // Adjust the value to change the roundness of the corners
+    borderWidth: 1, // Add border to give it a cleaner look
+    borderColor: 'gray', // Change the border color if needed
+    paddingHorizontal: 10, // Add some padding for better readability
+    marginBottom: 10, // Add margin bottom to separate inputs
   },
 });
 

@@ -53,19 +53,22 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.root}>
-      <Input
-        placeholder="Email"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={(nextVal) => setEmail(nextVal)}
-      />
-      <Input
-        placeholder="Password"
-        autoCapitalize="none"
-        value={password}
-        onChangeText={(nextVal) => setPassword(nextVal)}
-        secureTextEntry={true}
-      />
+
+    <Input
+      placeholder="Email"
+      autoCapitalize="none"
+      value={email}
+      onChangeText={(nextVal) => setEmail(nextVal)}
+      style={styles.input}
+    />
+    <Input
+      placeholder="Password"
+      autoCapitalize="none"
+      value={password}
+      onChangeText={(nextVal) => setPassword(nextVal)}
+      secureTextEntry={true}
+      style={styles.input}
+    />
 
       <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogin()}>
         <Text style={styles.buttonText}>Sign In</Text>
@@ -99,6 +102,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  input: {
+    borderRadius: 10, // Adjust the value to change the roundness of the corners
+    borderWidth: 1, // Add border to give it a cleaner look
+    borderColor: 'gray', // Change the border color if needed
+    paddingHorizontal: 10, // Add some padding for better readability
+    marginBottom: 10, // Add margin bottom to separate inputs
+  },
 });
+
+
 
 export default SignInScreen;

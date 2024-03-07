@@ -53,10 +53,11 @@ const HomeScreen = () => {
 
   const AuthFlowNavigator = () => (
     <Tab.Navigator
-    tabBarOptions={{
-      activeTintColor: 'green',
-      inactiveTintColor: 'black',
-    }}>
+    screenOptions={{
+      tabBarActiveTintColor: 'green',
+      tabBarInactiveTintColor: 'black',
+    }}
+  >
         <Tab.Screen
             name="Log In"
             component={LogInComponent}
@@ -80,10 +81,11 @@ const HomeScreen = () => {
 
   const ContentFlowNavigator = () => (
     <Tab.Navigator
-    tabBarOptions={{
-      activeTintColor: 'green',
-      inactiveTintColor: 'black',
+    screenOptions={{
+      tabBarActiveTintColor: 'green',
+      tabBarInactiveTintColor: 'black',
     }}
+  
     >
         <Tab.Screen
             name="Profile"
