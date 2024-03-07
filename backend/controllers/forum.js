@@ -39,7 +39,7 @@ module.exports.addComment = async (req, res) => {
 
         const commentRef = await forumDocRef.collection('comments').add(commentData);
 
-        return res.status(200).json({ message: 'Comment added successfully', comment: content, commentId: commentRef.id });
+        return res.status(200).json({ message: 'Comment added successfully', comment: content, userId: userId });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: error.message });
