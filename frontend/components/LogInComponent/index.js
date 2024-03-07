@@ -39,8 +39,8 @@ const SignInScreen = ({ navigation }) => {
         await secureStorage.put('authToken', resToken);
         await secureStorage.put('userName', resName);
         await secureStorage.put('userEmail', resEmail);
-        Alert.alert("Login Successful", `Welcome ${resName}!`);
         await Updates.reloadAsync();
+        Alert.alert("Login Successful", `Welcome ${resName}!`);
       } else {
         console.log('login failed');
         Alert.alert("Login Failed", data.message || "An error occurred");
@@ -104,9 +104,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    backgroundColor: '#caebab',
   },
   buttonContainer: {
-    backgroundColor: 'green',
+    backgroundColor: '#729c70',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
@@ -117,6 +118,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   input: {

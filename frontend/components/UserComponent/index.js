@@ -4,7 +4,7 @@ import * as Updates from 'expo-updates';
 
 import SecureStorageManager from '../../storage';
 
-const UserDetailScreen = ({ navigation }) => {
+const UserDetailComponent = ({ navigation }) => {
   const [authToken, setAuthToken] = useState(null);
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserDetailScreen;
+export default UserDetailComponent;

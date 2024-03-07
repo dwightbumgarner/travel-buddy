@@ -67,7 +67,7 @@ const SignUpComponent = ({ navigation }) => {
         />
 
         <Input
-          placeholder="Name"
+          placeholder="Full Name"
           autoCapitalize="none"
           value={name}
           onChangeText={(nextVal) => setName(nextVal)}
@@ -111,9 +111,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    backgroundColor: '#caebab',
   },
   buttonContainer: {
-    backgroundColor: 'green',
+    backgroundColor: '#729c70',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
   input: {
