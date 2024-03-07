@@ -53,90 +53,114 @@ const HomeScreen = () => {
 
   const AuthFlowNavigator = () => (
     <Tab.Navigator
-    screenOptions={{
-      tabBarActiveTintColor: 'green',
-      tabBarInactiveTintColor: 'black',
-    }}
-  >
-        <Tab.Screen
-            name="Log In"
-            component={LogInComponent}
-            options={{
-                tabBarIcon: (tabInfo) => (
-                <Ionicons name="log-in-outline" size={tabSize} />
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="Sign Up"
-            component={SignUpComponent}
-            options={{
-                tabBarIcon: (tabInfo) => (
-                    <Ionicons name="person-add-outline" size={tabSize} />
-                ),
-            }}
-        />
+      screenOptions={{
+        tabBarActiveTintColor: 'green',
+        tabBarInactiveTintColor: 'black',
+        tabBarStyle: {
+          backgroundColor: 'white',
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Log In"
+        component={LogInComponent}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? 'log-in' : 'log-in-outline'}
+              size={tabSize}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Sign Up"
+        component={SignUpComponent}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? 'person-add' : 'person-add-outline'}
+              size={tabSize}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 
   const ContentFlowNavigator = () => (
     <Tab.Navigator
-    screenOptions={{
-      tabBarActiveTintColor: 'green',
-      tabBarInactiveTintColor: 'black',
-    }}
-  
+      screenOptions={{
+        tabBarActiveTintColor: 'green',
+        tabBarInactiveTintColor: 'black',
+        tabBarStyle: {
+          backgroundColor: 'white',
+        },
+      }}
     >
-        <Tab.Screen
-            name="Profile"
-            component={UserDetailComponent}
-            options={{
-                tabBarIcon: (tabInfo) => (
-                <Ionicons name="person-outline" size={tabSize} />
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="Detect POI"
-            component={UploadPhotoScreen}
-            options={{
-                tabBarIcon: (tabInfo) => (
-                <Ionicons name="camera-outline" size={tabSize}/>
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="Find Nearby POI's"
-            component={NearbyPOIComponent}
-            options={{
-                tabBarIcon: (tabInfo) => (
-                    <Ionicons name="search-outline" size={tabSize}  />
-                ),
-            }}
-        />
-        <Tab.Screen
-            name="chat"
-            component={chatComponent}
-            options={{
-                tabBarStyle: {
-                    display: "none",
-                },
-                tabBarButton: () => null,
-            }}
-        />
+      <Tab.Screen
+        name="Profile"
+        component={UserDetailComponent}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? 'person' : 'person-outline'}
+              size={tabSize}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Detect POI"
+        component={UploadPhotoScreen}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? 'camera' : 'camera-outline'}
+              size={tabSize}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Find Nearby POI's"
+        component={NearbyPOIComponent}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <Ionicons
+              name={focused ? 'search' : 'search-outline'}
+              size={tabSize}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="chat"
+        component={chatComponent}
+        options={{
+          tabBarStyle: {
+            display: 'none',
+          },
+          tabBarButton: () => null,
+        }}
+      />
     </Tab.Navigator>
   );
 
-  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {authToken !== null ? (
-          <Stack.Screen name="ContentFlow" component={ContentFlowNavigator} />
-        ) : (
-          <Stack.Screen name="AuthFlow" component={AuthFlowNavigator} />
-        )}
+      {authToken !== null ? (
+        <Stack.Screen name="ContentFlow" component={ContentFlowNavigator} />
+      ) : (
+        <Stack.Screen name="AuthFlow" component={AuthFlowNavigator} />
+      )}
     </Stack.Navigator>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

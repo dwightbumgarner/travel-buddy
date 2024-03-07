@@ -84,7 +84,7 @@ const UploadPhotoScreen = ({ navigation }) => {
         if (resLandmarks && resLandmarks.length > 0) {
           Alert.alert(
             "Detected Landmark",
-            `Based on your GPS location and photo, we think the landmark is ${resLandmarks[0]}`,
+            `Based on your current location and the photo you uploaded, we think the landmark is ${resLandmarks[0]}`,
             [
                 { text: "OK", onPress: () => navigation.navigate('chat') }
             ],
