@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,7 +13,7 @@ import NearbyPOIComponent from "../NearbyPOIComponent";
 import ForumComponent from '../ForumComponent';
 import SecureStorageManager from '../../storage';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [authToken, setAuthToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -91,7 +91,6 @@ const HomeScreen = () => {
         headerShown: false,
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
-  
           if (route.name === 'Detect POI') {
             iconName = focused ? 'camera-sharp' : 'camera-outline';
           } else if (route.name === 'Find Nearby POI\'s') {
@@ -116,14 +115,19 @@ const HomeScreen = () => {
         <Stack.Screen 
           name="ContentFlow" 
           component={ContentFlowNavigator} 
-          options={{
+          options={({ navigation }) => ({
             headerShown: true,
             headerTitle: "TravelBuddy",
             headerTitleStyle: {
               fontFamily: 'MadimiOne',
               fontSize: 25,
             },
-          }} 
+            headerRight: () => (
+              <TouchableOpacity onPress={() => navigation.navigate('UserDetail')}>
+                <Ionicons name="person-circle" size={30} color="black" />
+              </TouchableOpacity>
+            ),
+          })}
         />
       ) : (
         <Stack.Screen 
@@ -134,6 +138,7 @@ const HomeScreen = () => {
           }}
         />
       )}
+      <Stack.Screen name="UserDetail" component={UserDetailComponent} />
     </Stack.Navigator>
   );
 };
