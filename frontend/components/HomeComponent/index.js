@@ -10,8 +10,8 @@ import SignUpComponent from '../SignUpComponent';
 import UserDetailComponent from '../UserComponent';
 import UploadPhotoScreen from '../UploadPhotoComponent';
 import NearbyPOIComponent from "../NearbyPOIComponent";
+import ForumComponent from '../ForumComponent';
 import SecureStorageManager from '../../storage';
-import chatComponent from "../ChatComponent";
 
 const HomeScreen = () => {
   const [authToken, setAuthToken] = useState(null);
@@ -91,25 +91,24 @@ const HomeScreen = () => {
         headerShown: false,
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
-
-          if (route.name === 'Profile') {
-            iconName = focused ? 'person-sharp' : 'person-outline';
-          } else if (route.name === 'Detect POI') {
+  
+          if (route.name === 'Detect POI') {
             iconName = focused ? 'camera-sharp' : 'camera-outline';
           } else if (route.name === 'Find Nearby POI\'s') {
             iconName = focused ? 'search-sharp' : 'search-outline';
+          } else if (route.name === 'Forum') {
+            iconName = focused ? 'chatbubbles-sharp' : 'chatbubbles-outline';
           }
           const iconSize = focused ? focusedTabSize : tabSize;
           return <Ionicons name={iconName} size={iconSize} color={color} />;
         },
       })}
     >
-      <Tab.Screen name="Profile" component={UserDetailComponent} />
       <Tab.Screen name="Detect POI" component={UploadPhotoScreen} />
       <Tab.Screen name="Find Nearby POI's" component={NearbyPOIComponent} />
-      <Tab.Screen name="chat" component={chatComponent} options={{ tabBarStyle: { display: "none" }, tabBarButton: () => null }} />
+      <Tab.Screen name="Forum" component={ForumComponent} />
     </Tab.Navigator>
-  );
+  );  
 
   return (
     <Stack.Navigator>
