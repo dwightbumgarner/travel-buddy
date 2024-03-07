@@ -1,4 +1,4 @@
-import { Alert, View, StyleSheet, Button } from 'react-native';
+import { Alert, View, StyleSheet, Button, TouchableOpacity, Text } from 'react-native';
 import React, { useState } from 'react';
 import * as Updates from 'expo-updates';
 
@@ -54,38 +54,50 @@ const SignInScreen = ({ navigation }) => {
   return (
     <View style={styles.root}>
       <Input
-        placeholder="email"
+        placeholder="Email"
         autoCapitalize="none"
         value={email}
         onChangeText={(nextVal) => setEmail(nextVal)}
       />
       <Input
-        placeholder="password"
+        placeholder="Password"
         autoCapitalize="none"
         value={password}
         onChangeText={(nextVal) => setPassword(nextVal)}
         secureTextEntry={true}
       />
-      <Button
-        onPress={() => handleLogin()}
-        title="Sign in"
-        color="blue"
-      />
-      <Button
-        onPress={() => navigation.navigate('register')}
-        title="Do not have an account? Sign up!"
-        type="Tertiary"
-      />
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogin()}>
+        <Text style={styles.buttonText}>Sign In</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('register')}>
+        <Text style={styles.buttonText}>Do not have an account? Sign up!</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   root: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: "50%",
-    width: '100%',
-    height: '100%',
+    paddingHorizontal: 20,
+  },
+  buttonContainer: {
+    backgroundColor: 'green',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
