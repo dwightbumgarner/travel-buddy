@@ -1,4 +1,4 @@
-import { Alert, View, StyleSheet, Button, TouchableOpacity, Text } from 'react-native';
+import { Alert, View, StyleSheet, Button, TouchableOpacity, Text, Image, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
 import React, { useState } from 'react';
 import * as Updates from 'expo-updates';
 
@@ -51,37 +51,54 @@ const SignInScreen = ({ navigation }) => {
     }
   };
 
+  const dismissKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <View style={styles.root}>
+    <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <TouchableWithoutFeedback onPress={dismissKeyboard}>
+        <View style={styles.root}>
+          <Image
+            source={require('../../assets/logo.png')}
+            style={styles.image}
+          />
 
-    <Input
-      placeholder="Email"
-      autoCapitalize="none"
-      value={email}
-      onChangeText={(nextVal) => setEmail(nextVal)}
-      style={styles.input}
-    />
-    <Input
-      placeholder="Password"
-      autoCapitalize="none"
-      value={password}
-      onChangeText={(nextVal) => setPassword(nextVal)}
-      secureTextEntry={true}
-      style={styles.input}
-    />
+          <Input
+            placeholder="Email"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={(nextVal) => setEmail(nextVal)}
+            style={styles.input}
+          />
+          <Input
+            placeholder="Password"
+            autoCapitalize="none"
+            value={password}
+            onChangeText={(nextVal) => setPassword(nextVal)}
+            secureTextEntry={true}
+            style={styles.input}
+          />
 
-      <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogin()}>
-        <Text style={styles.buttonText}>Sign In</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogin()}>
+            <Text style={styles.buttonText}>Sign In</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('register')}>
-        <Text style={styles.buttonText}>Do not have an account? Sign up!</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity onPress={() => navigation.navigate('register')} style={{ paddingTop: 20 }}>
+            <Text style={[styles.buttonText, { color: 'black' }]}>
+              Don't have an account? <Text style={[styles.buttonText, { color: 'green' }]}>Sign up!</Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   root: {
     flex: 1,
     justifyContent: 'center',
@@ -103,14 +120,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    borderRadius: 10, // Adjust the value to change the roundness of the corners
-    borderWidth: 1, // Add border to give it a cleaner look
-    borderColor: 'gray', // Change the border color if needed
-    paddingHorizontal: 10, // Add some padding for better readability
-    marginBottom: 10, // Add margin bottom to separate inputs
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    paddingHorizontal: 10,
+    marginBottom: 10,
+  },
+  image: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
+    marginTop: -50,
   },
 });
-
-
 
 export default SignInScreen;
