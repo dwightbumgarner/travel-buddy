@@ -1,4 +1,4 @@
-import { Alert, View, StyleSheet, Button, TouchableOpacity, Text } from 'react-native';
+import { Alert, View, StyleSheet, Button, TouchableOpacity, Text, Image, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import React, { useState } from 'react';
 import * as Updates from 'expo-updates';
 
@@ -56,40 +56,52 @@ const SignUpComponent = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.root}>
-      <Input
-        placeholder="Email"
-        autoCapitalize="none"
-        value={email}
-        onChangeText={(nextVal) => setEmail(nextVal)}
-        style={styles.input}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        style={styles.root}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <Image
+          source={require('../../assets/logo.png')}
+          style={styles.image}
+        />
 
-      />
-      <Input
-        placeholder="Password"
-        autoCapitalize="none"
-        value={password}
-        onChangeText={(nextVal) => setPassword(nextVal)}
-        secureTextEntry={true}
-        style={styles.input}
+        <Input
+          placeholder="Name"
+          autoCapitalize="none"
+          value={name}
+          onChangeText={(nextVal) => setName(nextVal)}
+          style={styles.input}
+        />
 
-      />
-      <Input
-        placeholder="Name"
-        autoCapitalize="none"
-        value={name}
-        onChangeText={(nextVal) => setName(nextVal)}
-        style={styles.input}
+        <Input
+          placeholder="Email"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={(nextVal) => setEmail(nextVal)}
+          style={styles.input}
+        />
 
-      />
-      <TouchableOpacity style={styles.buttonContainer} onPress={() => handleSignUp()}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
+        <Input
+          placeholder="Password"
+          autoCapitalize="none"
+          value={password}
+          onChangeText={(nextVal) => setPassword(nextVal)}
+          secureTextEntry={true}
+          style={styles.input}
+        />
 
-      <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('login')}>
-        <Text style={styles.buttonText}>Already have an account? Sign in!</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleSignUp()}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('login')} style={{ paddingTop: 20 }}>
+          <Text style={[styles.buttonText, { color: 'black' }]}>
+          Already have an account? <Text style={[styles.buttonText, { color: 'green' }]}>Sign in!</Text>
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -115,11 +127,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    borderRadius: 10, // Adjust the value to change the roundness of the corners
-    borderWidth: 1, // Add border to give it a cleaner look
-    borderColor: 'gray', // Change the border color if needed
-    paddingHorizontal: 10, // Add some padding for better readability
-    marginBottom: 10, // Add margin bottom to separate inputs
+    borderRadius: 10, 
+    borderWidth: 1, 
+    borderColor: 'gray',
+    paddingHorizontal: 10, 
+    marginBottom: 10,
+  },
+  image: {
+    width: 300,
+    height: 300,
+    marginBottom: 20,
+    marginTop: 0,
   },
 });
 

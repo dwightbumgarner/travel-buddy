@@ -52,17 +52,9 @@ const HomeScreen = () => {
   }
 
   const AuthFlowNavigator = () => (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: 'green',
-        tabBarInactiveTintColor: 'black',
-        tabBarStyle: {
-          backgroundColor: 'white',
-        },
-      }}
-    >
+    <Tab.Navigator>
       <Tab.Screen
-        name="Log In"
+        name="login"
         component={LogInComponent}
         options={{
           tabBarIcon: ({ focused, color }) => (
@@ -72,10 +64,14 @@ const HomeScreen = () => {
               color={color}
             />
           ),
+          tabBarStyle: {
+            display: 'none',
+          },
+          headerShown: false, // Hide the name of the screen
         }}
       />
       <Tab.Screen
-        name="Sign Up"
+        name="register"
         component={SignUpComponent}
         options={{
           tabBarIcon: ({ focused, color }) => (
@@ -85,6 +81,10 @@ const HomeScreen = () => {
               color={color}
             />
           ),
+          tabBarStyle: {
+            display: 'none',
+          },
+          headerShown: false, // Hide the name of the screen
         }}
       />
     </Tab.Navigator>
