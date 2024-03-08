@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: landmark_detection.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: landmark_detection.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const fs = require('fs');
+const GCPLandmarkSingleton = require('../third_party/google_lens');
+const FirebaseSingleton = require('../third_party/db');
+const firebaseInstance = FirebaseSingleton.getInstance();
+const db = firebaseInstance.getDatabase();
+
+/**
+ * Converts degrees to radians
+ * @param {number} degrees
+ * @returns {number} Radians
+ */
+const degreesToRadians = (degrees) => {
+    return degrees * (Math.PI / 180);
+}
+
+/**
+ * Calculates the Haversine distance between two points on the Earth.
+ * @param {number} lat1 Latitude of the first point
+ * @param {number} lon1 Longitude of the first point
+ * @param {number} lat2 Latitude of the second point
+ * @param {number} lon2 Longitude of the second point
+ * @returns {number} The distance in kilometers
+ */
+const haversineDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = degreesToRadians(lat2 - lat1);
+    const dLon = degreesToRadians(lon2 - lon1);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(degreesToRadians(lat1)) * Math.cos(degreesToRadians(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+/**
+ * Checks if a landmark is within a specified threshold distance from the user.
+ * @param {number} userLatitude - Latitude of the user.
+ * @param {number} userLongitude - Longitude of the user.
+ * @param {object} landmarkCoords - Coordinates of the landmark {latitude, longitude}.
+ * @param {number} threshold - Distance threshold in kilometers.
+ * @returns {boolean} - True if the landmark is within the threshold distance, false otherwise.
+ */
+const isLandmarkCloseToUser = (userLatitude, userLongitude, landmarkCoords, threshold) => {
+    const distance = haversineDistance(userLatitude, userLongitude, landmarkCoords.latitude, landmarkCoords.longitude);
+    console.log(distance);
+    return distance &lt;= threshold;
+}
+
+/**
+ * Detects landmarks in an uploaded image and checks if any are close to the user's location.
+ * Creates or updates forums related to detected landmarks if necessary.
+ *
+ * @param {object} req - The request object, containing the uploaded file and user location.
+ * @param {object} res - The response object used to send back the list of close landmarks or an error message.
+ */
+module.exports.detectLandmark = async (req, res) => {
+    try {
+        console.log('recevied a landmark detection req', req);
+
+        const landmarkDetector = GCPLandmarkSingleton.getInstance();
+        const filePath = req.file.path;
+        const {latitude, longitude} = req.body;
+
+        console.log('user coords', {latitude, longitude});
+
+        const result = await landmarkDetector.detectLandmark(filePath);
+
+        // coords = {'latitude': xx, 'longitude': xx}
+        const coords = result.landmarkAnnotations.map(annotation => annotation.locations[0].latLng);
+        const landmarks = result.landmarkAnnotations.map(annotation => annotation.description);
+
+        console.log("Landmark Detection Result:", result);
+        console.log("Landmark Detection Landmarks:", landmarks);
+        console.log("Landmark coords:", coords);
+
+        const closeLandmarks = landmarks.filter((_, index) => {
+            const landmarkCoords = coords[index];
+            console.log(landmarkCoords);
+
+            const threshold = 15; // 15km
+            return isLandmarkCloseToUser(latitude, longitude, landmarkCoords, threshold);
+        });
+
+        console.log('Close landmarks:', closeLandmarks);
+
+        // Create new forum if not exist
+        if (closeLandmarks.length > 0) {
+            const forumLandmark = closeLandmarks[0];
+
+            const forumsRef = db.collection('forums');
+            const Snapshot = await forumsRef.where('name', '==', forumLandmark).limit(1).get();
+
+            let forumDocId;
+
+            // Check if the forum (landmark) exists, if not create one
+            if (Snapshot.empty) {
+                // No existing forum found, create a new one
+                const newForumRef = forumsRef.doc(); // Automatically generate a new document ID
+                await newForumRef.set({
+                    name: forumLandmark,
+                    totalScore: 0,
+                    totalUsers: 0,
+                    // Don't set an optional rating initially
+                });
+                forumDocId = newForumRef.id;
+            } else {
+                forumDocId = Snapshot.docs[0].id;
+            }
+
+            console.log('Current forum: ', forumDocId);
+
+            // Now check if this user has access to this forum in their AccessibleForums subcollection
+            const accessibleForumsRef = db.collection('users').doc(req.user.id).collection('AccessibleForums').doc(forumDocId);
+            const accessibleForumDoc = await accessibleForumsRef.get();
+
+            if (!accessibleForumDoc.exists) {
+                await accessibleForumsRef.set({ hasAccess: true });
+            }
+        }
+
+        res.status(200).json({landmarks: closeLandmarks});
+    } catch (error) {
+        console.error("Error detecting landmarks:", error);
+        res.status(500).json({error});
+    } finally {
+        if (req.file &amp;&amp; req.file.path) {
+            fs.unlinkSync(req.file.path);
+        }
+
+        console.log('removed uploaded file');
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addComment">addComment</a></li><li><a href="global.html#addOrUpdateForumRating">addOrUpdateForumRating</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#degreesToRadians">degreesToRadians</a></li><li><a href="global.html#detectLandmark">detectLandmark</a></li><li><a href="global.html#generateToken">generateToken</a></li><li><a href="global.html#getAccessForums">getAccessForums</a></li><li><a href="global.html#getComment">getComment</a></li><li><a href="global.html#getNearbyPOIList">getNearbyPOIList</a></li><li><a href="global.html#getUsrByToken">getUsrByToken</a></li><li><a href="global.html#getUsrDetailByEmail">getUsrDetailByEmail</a></li><li><a href="global.html#haversineDistance">haversineDistance</a></li><li><a href="global.html#isLandmarkCloseToUser">isLandmarkCloseToUser</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#signin">signin</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri Mar 08 2024 23:38:41 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

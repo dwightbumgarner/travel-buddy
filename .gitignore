@@ -1,9 +1,0 @@
-.DS_Store
-/backend/node_modules
-backend/.env
-
-# Ngrok frontend replacement file
-frontend/consts.js
-
-# For JetBrains IDE
-.idea/
