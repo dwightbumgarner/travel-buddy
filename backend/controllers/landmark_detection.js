@@ -33,12 +33,27 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
     return R * c;
 }
 
+/**
+ * Checks if a landmark is within a specified threshold distance from the user.
+ * @param {number} userLatitude - Latitude of the user.
+ * @param {number} userLongitude - Longitude of the user.
+ * @param {object} landmarkCoords - Coordinates of the landmark {latitude, longitude}.
+ * @param {number} threshold - Distance threshold in kilometers.
+ * @returns {boolean} - True if the landmark is within the threshold distance, false otherwise.
+ */
 const isLandmarkCloseToUser = (userLatitude, userLongitude, landmarkCoords, threshold) => {
     const distance = haversineDistance(userLatitude, userLongitude, landmarkCoords.latitude, landmarkCoords.longitude);
     console.log(distance);
     return distance <= threshold;
 }
 
+/**
+ * Detects landmarks in an uploaded image and checks if any are close to the user's location.
+ * Creates or updates forums related to detected landmarks if necessary.
+ *
+ * @param {object} req - The request object, containing the uploaded file and user location.
+ * @param {object} res - The response object used to send back the list of close landmarks or an error message.
+ */
 module.exports.detectLandmark = async (req, res) => {
     try {
         console.log('recevied a landmark detection req', req);
@@ -75,7 +90,7 @@ module.exports.detectLandmark = async (req, res) => {
 
             const forumsRef = db.collection('forums');
             const Snapshot = await forumsRef.where('name', '==', forumLandmark).limit(1).get();
-            
+
             let forumDocId;
 
             // Check if the forum (landmark) exists, if not create one
@@ -100,7 +115,7 @@ module.exports.detectLandmark = async (req, res) => {
             const accessibleForumDoc = await accessibleForumsRef.get();
 
             if (!accessibleForumDoc.exists) {
-                await accessibleForumsRef.set({ hasAccess: true }); 
+                await accessibleForumsRef.set({ hasAccess: true });
             }
         }
 

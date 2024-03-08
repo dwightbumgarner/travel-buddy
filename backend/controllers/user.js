@@ -4,11 +4,22 @@ const FirebaseSingleton = require('../third_party/db');
 const firebaseInstance = FirebaseSingleton.getInstance();
 const db = firebaseInstance.getDatabase();
 
-// Helper function to generate a JWT token
+/**
+ * Generates a JWT token for a user.
+ *
+ * @param {Object} user - The user object containing the user's email and id.
+ * @returns {string} A JWT token that encodes the user's email and id.
+ */
 const generateToken = (user) => {
   return jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
 
+/**
+ * Registers a new user in the system.
+ *
+ * @param {Object} req - The request object, containing the user's registration information.
+ * @param {Object} res - The response object used to send back a token or an error message.
+ */
 module.exports.register = async (req, res) => {
     const { email, password, name } = req.body;
     console.log('received register request', {email, password, name});
@@ -45,6 +56,12 @@ module.exports.register = async (req, res) => {
     }
 };
 
+/**
+ * Authenticates a user and provides a JWT token if credentials are valid.
+ *
+ * @param {Object} req - The request object, containing the user's login credentials.
+ * @param {Object} res - The response object used to send back a token or an error message.
+ */
 module.exports.signin = async (req, res) => {
   const { email, password } = req.body;
   console.log('received login request', {email, password});
@@ -86,6 +103,12 @@ module.exports.signin = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves a user's details by their email address.
+ *
+ * @param {Object} req - The request object, containing the email in the params.
+ * @param {Object} res - The response object used to send back user details or an error message.
+ */
 module.exports.getUsrDetailByEmail = async (req, res) => {
     const { email } = req.params;
 
@@ -107,6 +130,12 @@ module.exports.getUsrDetailByEmail = async (req, res) => {
     }
 };
 
+/**
+ * Retrieves a user's details by their JWT token.
+ *
+ * @param {Object} req - The request object, containing the decoded JWT token.
+ * @param {Object} res - The response object used to send back user details or an error message.
+ */
 module.exports.getUsrByToken = async (req, res) => {
   try {
     console.log("get user by token for", req.user);

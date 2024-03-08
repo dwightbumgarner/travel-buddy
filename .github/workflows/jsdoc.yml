@@ -1,0 +1,40 @@
+name: Generate and Publish Documentation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        persist-credentials: false
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install and build backend
+      run: |
+        cd backend
+        npm ci
+        npm run build --if-present
+      shell: bash
+
+    - name: Generate JSDoc Documentation
+      run: |
+        cd backend
+        npx jsdoc -r ./controllers
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages
+        folder: backend/out
+        token: ${{ secrets.GITHUB_TOKEN }}

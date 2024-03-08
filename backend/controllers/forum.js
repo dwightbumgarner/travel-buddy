@@ -2,8 +2,14 @@ const FirebaseSingleton = require('../third_party/db');
 const firebaseInstance = FirebaseSingleton.getInstance();
 const db = firebaseInstance.getDatabase();
 
+/**
+ * Retrieves a list of forum IDs that a given user has access to.
+ *
+ * @param {object} req - The request object, including the authenticated user's ID.
+ * @param {object} res - The response object used to return the list of accessible forum IDs or an error.
+ */
 module.exports.getAccessForums = async (req, res) => {
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     try {
         const accessibleForumsSnapshot = await db.collection('users').doc(userId).collection('AccessibleForums').get();
@@ -16,6 +22,12 @@ module.exports.getAccessForums = async (req, res) => {
     }
 };
 
+/**
+ * Retrieves all comments for a specified forum.
+ *
+ * @param {object} req - The request object, containing the forum ID in the body.
+ * @param {object} res - The response object used to return the comments or an error.
+ */
 module.exports.getComment = async (req, res) => {
     const { forumId } = req.body;
     console.log('Get all comments from ', { forumId });
@@ -47,10 +59,15 @@ module.exports.getComment = async (req, res) => {
     }
 };
 
-
+/**
+ * Adds a new comment to a specified forum.
+ *
+ * @param {object} req - The request object, containing the forum ID and comment content.
+ * @param {object} res - The response object used to confirm the addition of the comment or an error.
+ */
 module.exports.addComment = async (req, res) => {
     const { forumId, content } = req.body;
-    const userId = req.user.id; 
+    const userId = req.user.id;
     console.log('received comment', { content, userId });
 
     try {
@@ -63,7 +80,7 @@ module.exports.addComment = async (req, res) => {
 
         // add comment to the subcollection
         const commentData = {
-            content: content, 
+            content: content,
             usersRefNum: userId,
             timestamp: new Date(),
         };
@@ -77,9 +94,15 @@ module.exports.addComment = async (req, res) => {
     }
 };
 
+/**
+ * Adds or updates a rating for a specified forum by a user.
+ *
+ * @param {object} req - The request object, containing the forum ID and rating.
+ * @param {object} res - The response object used to confirm the rating update or return an error.
+ */
 module.exports.addOrUpdateForumRating = async (req, res) => {
     const { forumId, rating } = req.body;
-    const userId = req.user.id; 
+    const userId = req.user.id;
     console.log('received update rating request', { forumId, userId, rating });
 
     // Check if rating is within the valid range (1 to 5)
