@@ -30,7 +30,7 @@ jobs:
     - name: Generate JSDoc Documentation
       run: |
         cd backend
-        npx jsdoc -c jsdoc.json -r backend/controllers
+        npx jsdoc -c jsdoc.json -r ./controllers
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.4
