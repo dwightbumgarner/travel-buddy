@@ -1,6 +1,12 @@
 const OpenAIAPISingleton = require('../third_party/chatgpt');
 const openAIAPI = OpenAIAPISingleton.getInstance();
 
+/**
+ * Handles a chat request with AI, responding to user input.
+ *
+ * @param {object} req - The request object, containing the user's conversation history in the body.
+ * @param {object} res - The response object used to send back the AI's response or an error message.
+ */
 module.exports.chatWithAI = async (req, res) => {
     try {
         const conversation = req.body.conversation;
@@ -15,6 +21,12 @@ module.exports.chatWithAI = async (req, res) => {
     }
 }
 
+/**
+ * Fetches a list of nearby Points of Interest (POIs) based on the user's location.
+ *
+ * @param {object} req - The request object, containing the latitude and longitude in the body.
+ * @param {object} res - The response object used to send back the list of nearby POIs or an error message.
+ */
 module.exports.getNearbyPOIList = async (req, res) => {
     try {
         const { latitude, longitude } = req.body;
