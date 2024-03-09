@@ -161,3 +161,40 @@ module.exports.getUsrByToken = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+/**
+ * Edit user's name by token.
+ *
+ * @param {Object} req - The request object, containing the decoded JWT token.
+ * @param {Object} res - The response object used to send back updated user details or an error message.
+ */
+module.exports.editUsernameByToken = async (req, res) => {
+    try {
+        console.log("edit user's name for", req.user);
+
+        const user = req.user;
+        const { newName } = req.body;
+        const usersRef = db.collection('users');
+
+        // Do not check since authenticated user should be in the db
+        // const snapshot = await usersRef.where('email', '==', user.email).get();
+        //
+        // if (snapshot.empty) {
+        //     console.log('cannot find in db user: ', req.user);
+        //
+        //     res.status(404).json({ message: 'User Not Found' });
+        //     return;
+        // }
+
+        usersRef.doc(user.id).update({
+            name : newName
+        })
+
+        res.status(200).json({email: user.email, name: newName});
+    } catch (error) {
+        console.log(error);
+
+        res.status(500).json({ message: error.message });
+    }
+};
