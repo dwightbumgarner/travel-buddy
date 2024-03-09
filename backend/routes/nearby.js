@@ -5,6 +5,6 @@ const {
 
 const nearbyRouter = express.Router();
 
-nearbyRouter.get('/nearby', getNearbyPOIList);
+nearbyRouter.post('/nearby', getNearbyPOIList);
 
 module.exports = nearbyRouter;
