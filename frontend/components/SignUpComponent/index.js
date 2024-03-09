@@ -17,6 +17,13 @@ const SignUpComponent = ({ navigation }) => {
     console.log('triggered handleSignUp');
     console.log(email, password, name);
 
+    // Email validation using regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Invalid Email", "Please enter a valid email address.");
+      return;
+    }
+
     try {
       const response = await fetch(SERVER_URL + "/user/register", {
         method: 'POST',

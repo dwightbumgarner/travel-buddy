@@ -9,12 +9,18 @@ import SignUpComponent from '../SignUpComponent';
 import UserDetailComponent from '../UserComponent';
 import UploadPhotoScreen from '../UploadPhotoComponent';
 import NearbyPOIComponent from "../NearbyPOIComponent";
+<<<<<<< Updated upstream
 import ChatComponent from "../ChatComponent";
 
 import SecureStorageManager from '../../storage';
 import chatComponent from "../ChatComponent";
 
 const HomeScreen = () => {
+=======
+import ForumComponent from '../ForumComponent';
+import SecureStorageManager from '../../storage';
+const HomeScreen = ({ navigation }) => {
+>>>>>>> Stashed changes
   const [authToken, setAuthToken] = useState(null);
   const [userName, setUserName] = useState('');
   const [loading, setLoading] = useState(true);
@@ -159,7 +165,31 @@ const HomeScreen = () => {
       ) : (
         <Stack.Screen name="AuthFlow" component={AuthFlowNavigator} />
       )}
+<<<<<<< Updated upstream
     </Stack.Navigator>
+=======
+
+<Stack.Screen
+  name="UserDetail"
+  component={UserDetailComponent}
+  options={({ navigation }) => ({
+    headerShown: true,
+    headerTitle: "TravelBuddy",
+    headerTitleStyle: {
+      fontFamily: 'MadimiOne',
+      fontSize: 25,
+    },
+    headerBackTitleVisible: false, 
+    headerLeft: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('ContentFlow')}>
+        <Ionicons name="arrow-back-outline" size={25} color="black" />
+      </TouchableOpacity>
+    ),
+  })}
+/>
+
+      </Stack.Navigator>
+>>>>>>> Stashed changes
   );
 };
 

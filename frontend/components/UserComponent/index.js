@@ -1,6 +1,8 @@
-import { Alert, View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { Alert, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import * as Updates from 'expo-updates';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 import SecureStorageManager from '../../storage';
 
@@ -63,7 +65,21 @@ const UserDetailScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} options={({  }) => ({
+      headerShown: true,
+      headerTitle: "TravelBuddy",
+      headerTitleStyle: {
+        fontFamily: 'MadimiOne',
+        fontSize: 25,
+      }
+    })}>
+      <Image
+        source={require('../../assets/defaultprofilepic.jpeg')}
+        style={styles.profileImage}
+      />
+      <TouchableOpacity>
+        <Ionicons name="navigate" size={25} color="green" />
+      </TouchableOpacity>
       <Text style={styles.text}>Name: {userName}</Text> 
       <Text style={styles.text}>Email: {userEmail}</Text> 
       <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogOut()}>
@@ -81,6 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginTop: -300, // Adjust the marginTop value to push everything up
   },
   text: {
     fontSize: 18,
@@ -98,6 +115,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderWidth: 2,
+    borderColor: 'green',
+    marginBottom: 20,
+  },
 });
 
+<<<<<<< Updated upstream
 export default UserDetailScreen;
+=======
+export default UserDetailComponent;
+>>>>>>> Stashed changes
