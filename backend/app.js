@@ -23,5 +23,6 @@ app.use('/api/user', require('./routes/user'));
 app.use('/api/landmark', require('./routes/landmark_detection'));
 app.use('/api/ai', require('./routes/ai_chat'));
 app.use('/api/forum', require('./routes/forum'));
+app.use('/api/nearby', require('./routes/nearby'));
 
 module.exports = app;

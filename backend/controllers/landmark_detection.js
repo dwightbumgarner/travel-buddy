@@ -73,20 +73,21 @@ module.exports.detectLandmark = async (req, res) => {
         console.log("Landmark Detection Result:", result);
         console.log("Landmark Detection Landmarks:", landmarks);
         console.log("Landmark coords:", coords);
-
-        const closeLandmarks = landmarks.filter((_, index) => {
+        
+        const landmarkWithCoords = landmarks.map((landmark, index) => {
             const landmarkCoords = coords[index];
-            console.log(landmarkCoords);
-
             const threshold = 15; // 15km
-            return isLandmarkCloseToUser(latitude, longitude, landmarkCoords, threshold);
-        });
-
-        console.log('Close landmarks:', closeLandmarks);
+            if (isLandmarkCloseToUser(latitude, longitude, landmarkCoords, threshold)) {
+                return { landmark, coords: landmarkCoords };
+            }
+            return null;
+        }).filter(Boolean);
+        
+        console.log('Close landmarks:', landmarkWithCoords);        
 
         // Create new forum if not exist
-        if (closeLandmarks.length > 0) {
-            const forumLandmark = closeLandmarks[0];
+        if (landmarkWithCoords.length > 0) {
+            const forumLandmark = landmarkWithCoords[0]["landmark"];
 
             const forumsRef = db.collection('forums');
             const Snapshot = await forumsRef.where('name', '==', forumLandmark).limit(1).get();
@@ -101,6 +102,8 @@ module.exports.detectLandmark = async (req, res) => {
                     name: forumLandmark,
                     totalScore: 0,
                     totalUsers: 0,
+                    lat: landmarkWithCoords[0]["coords"]["latitude"],
+                    lon: landmarkWithCoords[0]["coords"]["longitude"]
                     // Don't set an optional rating initially
                 });
                 forumDocId = newForumRef.id;
@@ -119,7 +122,7 @@ module.exports.detectLandmark = async (req, res) => {
             }
         }
 
-        res.status(200).json({landmarks: closeLandmarks});
+        res.status(200).json({landmarks: landmarkWithCoords});
     } catch (error) {
         console.error("Error detecting landmarks:", error);
         res.status(500).json({error});
