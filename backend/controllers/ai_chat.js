@@ -21,30 +21,30 @@ module.exports.chatWithAI = async (req, res) => {
     }
 }
 
-/**
- * Fetches a list of nearby Points of Interest (POIs) based on the user's location.
- *
- * @param {object} req - The request object, containing the latitude and longitude in the body.
- * @param {object} res - The response object used to send back the list of nearby POIs or an error message.
- */
-module.exports.getNearbyPOIList = async (req, res) => {
-    try {
-        const { latitude, longitude } = req.body;
-        console.log(`received a get nearby POIs req with user location { ${latitude}, ${longitude} }`);
+// /**
+//  * Fetches a list of nearby Points of Interest (POIs) based on the user's location.
+//  *
+//  * @param {object} req - The request object, containing the latitude and longitude in the body.
+//  * @param {object} res - The response object used to send back the list of nearby POIs or an error message.
+//  */
+// module.exports.getNearbyPOIList = async (req, res) => {
+//     try {
+//         const { latitude, longitude } = req.body;
+//         console.log(`received a get nearby POIs req with user location { ${latitude}, ${longitude} }`);
 
-        const list = await openAIAPI.getNearbyPOIList(latitude, longitude);
+//         const list = await openAIAPI.getNearbyPOIList(latitude, longitude);
 
-        if (list.length !== 5) {
-            console.log("AI failed to provide 5 nearby POIs", list);
-            res.status(400).json({list});
-        }
-        else {
-            console.log("AI successfully provided 5 nearby POIs:", list)
-            res.status(200).json({
-                POIList: list,
-            });
-        }
-    } catch (error) {
-        console.error("Error fetching 5 nearby POIs from AI:", error);
-    }
-}
+//         if (list.length !== 5) {
+//             console.log("AI failed to provide 5 nearby POIs", list);
+//             res.status(400).json({list});
+//         }
+//         else {
+//             console.log("AI successfully provided 5 nearby POIs:", list)
+//             res.status(200).json({
+//                 POIList: list,
+//             });
+//         }
+//     } catch (error) {
+//         console.error("Error fetching 5 nearby POIs from AI:", error);
+//     }
+// }

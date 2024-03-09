@@ -25,7 +25,7 @@ describe("API tests", () => {
 
   test("try to get nearby POI without authentication should fail", async () => {
     const response = await request(app)
-      .post("/api/ai/nearby")
+      .post("/api/nearby/nearby")
       .send({ latitude: 0, longitude: 0 });
 
     expect(response.statusCode).toBe(401);
