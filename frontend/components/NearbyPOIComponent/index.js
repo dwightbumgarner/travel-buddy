@@ -19,7 +19,7 @@ const NearbyPOIScreen = ({ navigation }) => {
             return;
         }
         try {
-            const response = await fetch(SERVER_URL + "/ai/nearby", {
+            const response = await fetch(SERVER_URL + "/nearby/nearby", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,8 +58,10 @@ const NearbyPOIScreen = ({ navigation }) => {
                 return;
             }
 
-            let location = await Location.getCurrentPositionAsync({});
-            console.log('user current location:', location);
+            // let location = await Location.getCurrentPositionAsync({});
+            // console.log('user current location:', location);
+            const locationString = await secureStorage.get('userLocation');
+            const location = JSON.parse(locationString);
             setLocation(location);
         }
 

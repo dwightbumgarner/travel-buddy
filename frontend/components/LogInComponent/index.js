@@ -1,6 +1,7 @@
 import { Alert, View, StyleSheet, Button, TouchableOpacity, Text, Image, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
 import React, { useState } from 'react';
 import * as Updates from 'expo-updates';
+import * as Location from 'expo-location';
 
 import { Input } from '@ui-kitten/components';
 
@@ -10,6 +11,7 @@ import SecureStorageManager from '../../storage';
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [location, setLocation] = useState(null);
   const secureStorage = SecureStorageManager.getInstance();
 
   const handleLogin = async () => {
@@ -39,6 +41,10 @@ const SignInScreen = ({ navigation }) => {
         await secureStorage.put('authToken', resToken);
         await secureStorage.put('userName', resName);
         await secureStorage.put('userEmail', resEmail);
+        
+        let currentLocation = await Location.getCurrentPositionAsync({});
+        await secureStorage.put('userLocation', JSON.stringify(currentLocation));
+
         await Updates.reloadAsync();
         Alert.alert("Login Successful", `Welcome ${resName}!`);
       } else {
