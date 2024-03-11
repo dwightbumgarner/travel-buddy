@@ -11,6 +11,7 @@ import UserDetailComponent from '../UserComponent';
 import UploadPhotoScreen from '../UploadPhotoComponent';
 import NearbyPOIComponent from "../NearbyPOIComponent";
 import ForumComponent from '../ForumComponent';
+import ForumCommentComponent from '../ForumCommentComponent';
 import SecureStorageManager from '../../storage';
 
 const HomeScreen = ({ navigation }) => {
@@ -139,6 +140,24 @@ const HomeScreen = ({ navigation }) => {
         />
       )}
       <Stack.Screen name="UserDetail" component={UserDetailComponent} />
+      <Stack.Screen 
+            name="ForumCommentComponent"
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerTitle: "TravelBuddy",
+              headerTitleStyle: {
+                fontFamily: 'MadimiOne',
+                fontSize: 25,
+              },
+              headerBackTitle: "Back",
+              headerTintColor: "#000",
+              headerRight: () => (
+                <TouchableOpacity onPress={() => navigation.navigate('UserDetail')}>
+                  <Ionicons name="person-circle" size={30} color="black" />
+                </TouchableOpacity>
+              ),
+            })}
+            component={ForumCommentComponent} />
     </Stack.Navigator>
   );
 };

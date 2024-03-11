@@ -9,7 +9,7 @@ const { verifyAuthentication } = require('../middlewares/auth');
 
 const forumRouter = express.Router();
 
-forumRouter.get('/forum', verifyAuthentication, getAccessForums);
+forumRouter.get('/', verifyAuthentication, getAccessForums);
 forumRouter.post('/getComment', verifyAuthentication, getComment);
 forumRouter.post('/addComment', verifyAuthentication, addComment);
 forumRouter.post('/rate', verifyAuthentication, addOrUpdateForumRating);
