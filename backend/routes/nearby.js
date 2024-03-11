@@ -6,6 +6,6 @@ const { verifyAuthentication } = require('../middlewares/auth');
 
 const nearbyRouter = express.Router();
 
-nearbyRouter.post('/nearby', verifyAuthentication, getNearbyPOIList);
+nearbyRouter.post('/', verifyAuthentication, getNearbyPOIList);
 
 module.exports = nearbyRouter;

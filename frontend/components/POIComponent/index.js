@@ -35,7 +35,7 @@ const POIComponent = ({ name, imageURL, rating = 0, disabled = true, onPress, fo
   }, []);
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container} disabled={onPress ? false : true}>
       <Image source={{ uri: imageURL }} style={styles.image} />
       <View style={styles.textAndStarsContainer}>
         <Text style={styles.name}>{name}</Text>
