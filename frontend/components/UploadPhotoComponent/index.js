@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View, Text, Image, Button, StyleSheet, TouchableOpacity, ActionSheetIOS } from 'react-native';
+import { Alert, View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator, ActionSheetIOS } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 
@@ -11,7 +11,7 @@ const UploadPhotoScreen = ({ navigation }) => {
   const [authToken, setAuthToken] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [location, setLocation] = useState(null);
-  const [detectedLandmarks, setDetectedLandmarks] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
   const secureStorage = SecureStorageManager.getInstance();
 
   useEffect(() => {
@@ -76,7 +76,8 @@ const UploadPhotoScreen = ({ navigation }) => {
   };
 
   const handleUploadPhoto = async (uri) => {
-    console.log("uploading photo");
+    setIsUploading(true);
+
     const formData = new FormData();
     formData.append('image', {
       uri: uri,
@@ -99,84 +100,77 @@ const UploadPhotoScreen = ({ navigation }) => {
 
       const data = await response.json();
       if (data && data.landmarks && data.landmarks.length > 0) {
-        setDetectedLandmarks(data.landmarks);
-        await secureStorage.put('detectedLandmark', data.landmarks[0]);
+        await secureStorage.put('detectedLandmark', data.landmarks[0].landmark);
+        setPhoto(null);
+        navigation.navigate('ChatScreen', { name: data.landmarks[0].landmark, imageURL: uri});
       } else {
         Alert.alert(
           "No Landmarks Detected",
-          "We couldn't identify any landmarks in your photo. Please try a different image.",
+          "Please try again with a different photo.",
           [{ text: "OK" }]
         );
+        setPhoto(null);
       }
     } catch (error) {
       console.error('Upload failed', error);
       Alert.alert("Upload Error", "An error occurred while uploading the photo.");
+    } finally {
+      setIsUploading(false);
     }
   };
 
   return (
-    <View style={styles.root}>
-      <View style={styles.uploadContainer}>
-        <Text style={styles.uploadText}>{detectedLandmarks.length > 0 ? detectedLandmarks[0] : "Select Landmark Image:"}</Text>
-        <TouchableOpacity onPress={showActionSheet} style={styles.photoContainer}>
-          {photo && (
-            <View style={styles.photoWrapper}>
-              <Image
-                source={{ uri: photo }}
-                style={styles.photo}
-              />
-            </View>
-          )}
-          {!photo && <Text style={styles.photoPlaceholderText}>Select</Text>}
-        </TouchableOpacity>
-      </View>
-      <ChatScreen />
+    <View style={styles.container}>
+      <TouchableOpacity onPress={showActionSheet} style={styles.photoUploadButton}>
+        {photo ? (
+          <Image source={{ uri: photo }} style={styles.photo} />
+        ) : (
+          <Image source={require('../../assets/uploadPlaceholder.png')} style={styles.photo} />
+        )}
+      </TouchableOpacity>
+      {isUploading && (
+        <View style={styles.uploadStatus}>
+          <Text style={styles.detectingText}>Detecting Landmark</Text>
+          <ActivityIndicator size="small" color="#000" />
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  root: {
+  container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: '#f2e7d6',
   },
-  uploadContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  uploadText: {
-    marginRight: 10,
-    fontSize: 25,
-  },
-  photoContainer: {
-    width: 70,
-    height: 70,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderStyle: 'dotted',
+  photoUploadButton: {
+    marginTop: 50,
+    width: '90%',
+    height: '70%',
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
-    marginLeft: 'auto',
-  },
-  photoWrapper: {
-    flexDirection: 'row',
     alignItems: 'center',
   },
   photo: {
-    width: 70,
-    height: 70,
+    width: '100%',
+    height: '100%',
     borderRadius: 15,
   },
-  photoPlaceholderText: {
-    textAlign: 'center',
-    color: '#999',
+  uploadText: {
+    fontSize: 18,
+    color: '#2b2a29',
   },
-  chatContainer: {
-    width: '100%',
-    paddingHorizontal: 10,
+  uploadStatus: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  detectingText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2b2a29',
+    marginRight: 10,
   },
 });
 

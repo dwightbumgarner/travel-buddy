@@ -91,7 +91,8 @@ const ForumComponent = ({ navigation }) => {
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
-    padding: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     backgroundColor: '#f2e7d6',
     flex: 1,
   },
