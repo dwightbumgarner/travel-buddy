@@ -39,8 +39,9 @@ const SignInScreen = ({ navigation }) => {
         await secureStorage.put('authToken', resToken);
         await secureStorage.put('userName', resName);
         await secureStorage.put('userEmail', resEmail);
-        await Updates.reloadAsync();
-        Alert.alert("Login Successful", `Welcome ${resName}!`);
+        setEmail('');
+        setPassword('');
+        navigation.navigate('Content');
       } else {
         console.log('login failed');
         Alert.alert("Login Failed", data.message || "An error occurred");
