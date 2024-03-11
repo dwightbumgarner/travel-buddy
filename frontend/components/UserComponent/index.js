@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, View, StyleSheet, Text, TouchableOpacity, Dimensions, TextInput, Image, ActionSheetIOS } from 'react-native';
 import * as Updates from 'expo-updates';
 import * as ImagePicker from 'expo-image-picker';
+import { SERVER_URL } from '../../consts';
 
 import SecureStorageManager from '../../storage';
 
@@ -79,6 +80,37 @@ const UserDetailComponent = ({ navigation }) => {
     );
   };
 
+  const handleNameUpdate = async (newName) => {
+    console.log("HKSD<")
+    console.log(newName);
+  
+    try {
+      const response = await fetch(`${SERVER_URL}/user/edit_name`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'authentication': authToken,
+        },
+        body: JSON.stringify({
+          newName: newName,
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        Alert.alert("Success", "Your name has been updated.");
+        await secureStorage.put('userName', newName);
+        setUserName(newName);
+      } else {
+        throw new Error('Failed to update name');
+      }
+    } catch (error) {
+      console.error('Error updating name:', error);
+      Alert.alert("Error", "An error occurred while updating your name.");
+    }
+  };
+
   if (loading) {
     return (
       <View style={styles.center}>
@@ -100,6 +132,7 @@ const UserDetailComponent = ({ navigation }) => {
         placeholderTextColor="#999"
         autoCapitalize="none"
         returnKeyType="done"
+        onEndEditing={() => handleNameUpdate(userName)}
       />
       <TextInput
         style={styles.input}
