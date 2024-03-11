@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { View, TextInput, TouchableOpacity, Text, ScrollView, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, ScrollView, Alert, StyleSheet, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { SERVER_URL } from '../../consts';
@@ -82,7 +82,7 @@ const ChatScreen = ({ route }) => {
     if (loading) {
         return (
             <View style={styles.center}>
-                <Text>Loading...</Text>
+              <ActivityIndicator size="large" color="#2b2a29" />
             </View>
         );
     }
@@ -203,6 +203,12 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f2e7d6',
     },
 });
 

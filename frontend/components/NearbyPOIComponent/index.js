@@ -69,7 +69,9 @@ const NearbyPOIScreen = ({ navigation }) => {
     return (
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.root}>
             {loading ? (
-                <ActivityIndicator size="large" color="#2b2a29" />
+                <View style={styles.center}>
+                    <ActivityIndicator size="large" color="#2b2a29" />
+                </View>
             ) : POIList.length ? (
                 POIList.map((poi, index) => (
                     <POIComponent
@@ -100,6 +102,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#f2e7d6',
     },
 });
 

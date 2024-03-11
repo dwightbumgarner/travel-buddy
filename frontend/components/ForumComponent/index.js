@@ -55,7 +55,7 @@ const ForumComponent = ({ navigation }) => {
   if (loading) {
     return (
       <View style={styles.center}>
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color="#2b2a29" />
       </View>
     );
   }
