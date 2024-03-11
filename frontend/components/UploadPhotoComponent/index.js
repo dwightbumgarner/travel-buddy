@@ -5,7 +5,6 @@ import * as Location from 'expo-location';
 
 import { SERVER_URL } from '../../consts';
 import SecureStorageManager from '../../storage';
-import ChatScreen from '../ChatComponent';
 
 const UploadPhotoScreen = ({ navigation }) => {
   const [authToken, setAuthToken] = useState(null);

@@ -1,25 +1,50 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import * as Location from 'expo-location';
 
 import { SERVER_URL } from '../../consts';
 import SecureStorageManager from '../../storage';
-import {ListItem} from "@ui-kitten/components";
+import POIComponent from '../POIComponent'; // Ensure this path is correct for your project structure
 
 const NearbyPOIScreen = ({ navigation }) => {
-    const [POIList, setPOIList] = useState(null);
+    const [POIList, setPOIList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [location, setLocation] = useState(null);
-    const [locationErrMsg, setLocationErrMsg] = useState(null);
     const [authToken, setAuthToken] = useState(null);
     const secureStorage = SecureStorageManager.getInstance();
 
-    const fetchPOIList = async () => {
-        if (!location) {
-            return;
+    useEffect(() => {
+        const checkAuthTokenAndLocation = async () => {
+            try {
+                const token = await secureStorage.get('authToken');
+                setAuthToken(token);
+            } catch (error) {
+                console.error('Error fetching auth token:', error);
+            }
+
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.error('Permission to access location was denied');
+                return;
+            }
+
+            let userLocation = await Location.getCurrentPositionAsync({});
+            setLocation(userLocation);
+            setLoading(false);
+        };
+
+        checkAuthTokenAndLocation();
+    }, []);
+
+    useEffect(() => {
+        if (authToken && location) {
+            fetchPOIList();
         }
+    }, [authToken, location]);
+
+    const fetchPOIList = async () => {
         try {
-            const response = await fetch(SERVER_URL + "/ai/nearby", {
+            const response = await fetch(`${SERVER_URL}/nearby`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -29,96 +54,52 @@ const NearbyPOIScreen = ({ navigation }) => {
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
                 }),
-            })
+            });
             if (response.status === 200) {
                 const data = await response.json();
-                setPOIList(data.POIList);
+                setPOIList(data);
+            } else {
+                console.error('Failed to fetch POI list with status:', response.status);
             }
         } catch (error) {
             console.error('Error getting POI list:', error);
         }
     };
 
-    useEffect(() => {
-        const checkAuthToken = async () => {
-            try {
-                const token = await secureStorage.get('authToken');
-                setAuthToken(token);
-            } catch (error) {
-                console.log('Error fetching auth token:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        const checkUserLocation = async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setLocationErrMsg('Permission to access location was denied');
-                return;
-            }
-
-            let location = await Location.getCurrentPositionAsync({});
-            console.log('user current location:', location);
-            setLocation(location);
-        }
-
-        checkAuthToken();
-        checkUserLocation();
-    }, []);
-
-    useEffect(() => {
-        fetchPOIList();
-    }, [location])
-
-
-    if (loading) {
-        return (
-            <View style={styles.center}>
-                <Text>Loading...</Text>
-            </View>
-        );
-    }
-
-    if (locationErrMsg === null && location === null) {
-        return (
-            <View style={styles.center}>
-                <Text>You have to enable GPS tracking to use the nearby POI's feature</Text>
-            </View>
-        )
-    }
-
-    if (POIList === null) {
-        return (
-            <View style={styles.center}>
-                <Text>Sorry! We encountered an error fetching the nearby POI's.</Text>
-            </View>
-        )
-    }
-
     return (
-        <View style={styles.root}>
-            {
-                POIList.map((item, i) => (
-                    <ListItem
-                        key={i}
-                        title={item}
-                        leftIcon={{ name: 'recommend' }}
-                        bottomDivider
-                        chevron
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.root}>
+            {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" />
+            ) : POIList.length ? (
+                POIList.map((poi, index) => (
+                    <POIComponent
+                        key={index}
+                        name={poi.name}
+                        imageURL={poi.url}
+                        rating={poi.forumRating || 0}
                     />
                 ))
-            }
-        </View>
+            ) : (
+                <Text>No Points of Interest found.</Text>
+            )}
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    scrollView: {
+        flex: 1,
+        backgroundColor: '#f2e7d6', // Match the background color with contentContainerStyle
+    },
     root: {
         alignItems: 'center',
-        marginTop: "5%",
-        width: '100%',
-        height: '100%',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
