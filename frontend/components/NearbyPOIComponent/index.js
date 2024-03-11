@@ -80,7 +80,7 @@ const NearbyPOIScreen = ({ navigation }) => {
                     />
                 ))
             ) : (
-                <Text>No Points of Interest found.</Text>
+                <ActivityIndicator size="large" color="#0000ff" />
             )}
         </ScrollView>
     );

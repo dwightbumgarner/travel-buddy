@@ -143,7 +143,14 @@ const HomeScreen = ({ navigation }) => {
           }}
         />
       )}
-      <Stack.Screen name="UserDetail" component={UserDetailComponent} />
+      <Stack.Screen 
+            name="UserDetail" 
+            options={{
+              header: ({ navigation }) => {
+                return <HeaderComponent showBack={true} showUser={false} navigation={navigation} />;
+              },
+            }}
+            component={UserDetailComponent} />
       <Stack.Screen 
             name="ForumCommentComponent"
             options={{
