@@ -71,7 +71,7 @@ module.exports.signin = async (req, res) => {
     const snapshot = await usersRef.where('email', '==', email).get();
 
     if (snapshot.empty) {
-        console.log("found existing user with same email");
+        console.log("no existing user with same email");
 
         res.status(404).json({ message: 'User not found' });
         return;
