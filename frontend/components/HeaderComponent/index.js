@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const HeaderComponent = ({ showBack, navigation }) => {
+const HeaderComponent = ({ showBack, navigation, showUser=true }) => {
   return (
     <View style={styles.shadowContainer}>
       <LinearGradient
@@ -20,9 +20,13 @@ const HeaderComponent = ({ showBack, navigation }) => {
             <View style={styles.placeholderIcon} />
         )}
         <Text style={styles.title}>TravelBuddy</Text>
+        {showUser ? (
         <TouchableOpacity onPress={() => navigation.navigate('UserDetail')} style={styles.iconButton}>
           <Ionicons name="person-circle" size={30} color="#2b2a29" />
         </TouchableOpacity>
+        ) : (
+            <View style={styles.placeholderIcon} />
+        )}
       </LinearGradient>
     </View>
   );

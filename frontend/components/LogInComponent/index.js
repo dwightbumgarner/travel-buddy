@@ -86,7 +86,7 @@ const SignInScreen = ({ navigation }) => {
 
           <TouchableOpacity onPress={() => navigation.navigate('register')} style={{ paddingTop: 20 }}>
             <Text style={[styles.buttonText, { color: 'black' }]}>
-              Don't have an account? <Text style={[styles.buttonText, { color: 'green' }]}>Sign up!</Text>
+              Don't have an account? <Text style={[styles.buttonText, { color: '#729c70' }]}>Sign up!</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    backgroundColor: '#caebab',
+    backgroundColor: '#f2e7d6',
   },
   buttonContainer: {
     backgroundColor: '#729c70',
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    borderRadius: 10,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: 'gray',
     paddingHorizontal: 10,
