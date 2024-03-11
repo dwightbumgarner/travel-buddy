@@ -107,8 +107,10 @@ module.exports.detectLandmark = async (req, res) => {
                     // Don't set an optional rating initially
                 });
                 forumDocId = newForumRef.id;
+                forumRating = 0;
             } else {
                 forumDocId = Snapshot.docs[0].id;
+                forumRating = Snapshot.docs[0].data().forumRating;
             }
 
             console.log('Current forum: ', forumDocId);
@@ -122,7 +124,7 @@ module.exports.detectLandmark = async (req, res) => {
             }
         }
 
-        res.status(200).json({landmarks: landmarkWithCoords});
+        res.status(200).json({ landmarks: landmarkWithCoords, forumRating: forumRating });
     } catch (error) {
         console.error("Error detecting landmarks:", error);
         res.status(500).json({error});

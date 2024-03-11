@@ -101,7 +101,7 @@ const UploadPhotoScreen = ({ navigation }) => {
       if (data && data.landmarks && data.landmarks.length > 0) {
         await secureStorage.put('detectedLandmark', data.landmarks[0].landmark);
         setPhoto(null);
-        navigation.navigate('ChatScreen', { name: data.landmarks[0].landmark, imageURL: uri});
+        navigation.navigate('ChatScreen', { name: data.landmarks[0].landmark, rating: data.forumRating, imageURL: uri});
       } else {
         Alert.alert(
           "No Landmarks Detected",
