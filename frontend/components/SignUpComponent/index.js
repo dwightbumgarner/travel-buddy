@@ -57,8 +57,10 @@ const SignUpComponent = ({ navigation }) => {
         await secureStorage.put('authToken', data.token);
         await secureStorage.put('userName', data.name);
         await secureStorage.put('userEmail', data.email);
-        Alert.alert("Sign Up Successful", `Welcome ${data.name}!`);
-        await Updates.reloadAsync();
+        setName('');
+        setEmail('');
+        setPassword('');
+        navigation.navigate('Content');
       } else {
         console.log('Sign Up failed');
         Alert.alert("Sign Up Failed", data.message || "An error occurred");

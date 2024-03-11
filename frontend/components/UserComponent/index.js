@@ -46,8 +46,7 @@ const UserDetailComponent = ({ navigation }) => {
       await secureStorage.delete('userName');
       await secureStorage.delete('userEmail');
       await secureStorage.delete('detectedLandmark');
-      await secureStorage.delete('profileImage');
-      await Updates.reloadAsync();
+      navigation.navigate('login');
     } catch (error) {
       console.error(error);
       Alert.alert("Login Error", "An unexpected error occurred.");
