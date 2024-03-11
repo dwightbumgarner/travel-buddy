@@ -13,6 +13,7 @@ import NearbyPOIComponent from "../NearbyPOIComponent";
 import ForumComponent from '../ForumComponent';
 import ForumCommentComponent from '../ForumCommentComponent';
 import SecureStorageManager from '../../storage';
+import HeaderComponent from '../HeaderComponent';
 
 const HomeScreen = ({ navigation }) => {
   const [authToken, setAuthToken] = useState(null);
@@ -26,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
     MadimiOne: require('../../assets/fonts/MadimiOne-Regular.ttf'), 
   });
 
-  const tabSize = 26;
+  const tabSize = 22;
   const focusedTabSize = 30;
 
   useEffect(() => {
@@ -93,14 +94,32 @@ const HomeScreen = ({ navigation }) => {
         tabBarIcon: ({ color, size, focused }) => {
           let iconName;
           if (route.name === 'Detect POI') {
-            iconName = focused ? 'camera-sharp' : 'camera-outline';
+            iconName = 'camera-outline';
           } else if (route.name === 'Find Nearby POI\'s') {
-            iconName = focused ? 'search-sharp' : 'search-outline';
+            iconName = 'search-outline';
           } else if (route.name === 'Forum') {
-            iconName = focused ? 'chatbubbles-sharp' : 'chatbubbles-outline';
+            iconName = 'chatbubbles-outline';
           }
           const iconSize = focused ? focusedTabSize : tabSize;
           return <Ionicons name={iconName} size={iconSize} color={color} />;
+        },
+        tabBarStyle: {
+          position: 'absolute',
+          left: 5,
+          right: 5,
+          elevation: 0,
+          backgroundColor: '#fcf4e6',
+          borderRadius: 50,
+          height: 80,
+          paddingBottom: 20,
+          paddingTop: 10,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: -5,
+          },
+          shadowOpacity: 0.12,
+          shadowRadius: 5.5,
         },
       })}
     >
@@ -116,19 +135,11 @@ const HomeScreen = ({ navigation }) => {
         <Stack.Screen 
           name="ContentFlow" 
           component={ContentFlowNavigator} 
-          options={({ navigation }) => ({
-            headerShown: true,
-            headerTitle: "TravelBuddy",
-            headerTitleStyle: {
-              fontFamily: 'MadimiOne',
-              fontSize: 25,
+          options={{
+            header: ({ navigation }) => {
+              return <HeaderComponent showBack={false} navigation={navigation} />;
             },
-            headerRight: () => (
-              <TouchableOpacity onPress={() => navigation.navigate('UserDetail')}>
-                <Ionicons name="person-circle" size={30} color="black" />
-              </TouchableOpacity>
-            ),
-          })}
+          }}
         />
       ) : (
         <Stack.Screen 
@@ -142,21 +153,11 @@ const HomeScreen = ({ navigation }) => {
       <Stack.Screen name="UserDetail" component={UserDetailComponent} />
       <Stack.Screen 
             name="ForumCommentComponent"
-            options={({ navigation }) => ({
-              headerShown: true,
-              headerTitle: "TravelBuddy",
-              headerTitleStyle: {
-                fontFamily: 'MadimiOne',
-                fontSize: 25,
+            options={{
+              header: ({ navigation }) => {
+                return <HeaderComponent showBack={true} navigation={navigation} />;
               },
-              headerBackTitle: "Back",
-              headerTintColor: "#000",
-              headerRight: () => (
-                <TouchableOpacity onPress={() => navigation.navigate('UserDetail')}>
-                  <Ionicons name="person-circle" size={30} color="black" />
-                </TouchableOpacity>
-              ),
-            })}
+            }}
             component={ForumCommentComponent} />
     </Stack.Navigator>
   );
