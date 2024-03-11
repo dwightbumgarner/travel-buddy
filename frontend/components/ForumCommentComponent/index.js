@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, TextInput, Button, Text, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, ScrollView, StyleSheet, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { SERVER_URL } from '../../consts';
@@ -132,7 +132,7 @@ const ForumCommentScreen = ({ route }) => {
             </View>
             {loading ? (
                 <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color="#0000ff" />
+                    <ActivityIndicator size="large" color="#2b2a29" />
                 </View>
             ) : (
                 <ScrollView
@@ -157,7 +157,9 @@ const ForumCommentScreen = ({ route }) => {
                     placeholder="Write a comment..."
                     multiline
                 />
-                <Button title="Post" onPress={addComment} />
+                <TouchableOpacity style={styles.sendButton} onPress={addComment}>
+                    <Text style={styles.buttonText}>Post</Text>
+                </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>
     );
@@ -196,22 +198,40 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
     inputContainer: {
-        borderTopWidth: 1,
-        borderColor: '#cccccc',
-        padding: 10,
-        paddingBottom: 40,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        padding: 16,
+        backgroundColor: '#fcf4e6',
+        paddingBottom: 40,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: -5,
+        },
+        shadowOpacity: 0.12,
+        shadowRadius: 5.5,
     },
     input: {
         flex: 1,
-        marginRight: 10,
-        padding: 10,
-        backgroundColor: '#ffffff',
-        borderRadius: 5,
+        marginRight: 16,
+        padding: 8,
+        borderColor: '#ccc',
+        backgroundColor: '#fff',
         borderWidth: 1,
-        borderColor: '#cccccc',
+        borderRadius: 20,
+    },
+    sendButton: {
+        backgroundColor: '#729c70',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     POIContainer: {
         marginHorizontal: 20,

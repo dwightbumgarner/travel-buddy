@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { View, TextInput, Button, Text, ScrollView, Alert, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, ScrollView, Alert, StyleSheet } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 import { SERVER_URL } from '../../consts';
@@ -119,7 +119,9 @@ const ChatScreen = ({ route }) => {
                     onChangeText={(text) => setUserInput(text)}
                     placeholder="Type a message..."
                 />
-                <Button title="Send" onPress={sendMessage} />
+                <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+                    <Text style={styles.buttonText}>Send</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -139,16 +141,25 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: '#fff',
+        backgroundColor: '#fcf4e6',
         paddingBottom: 40,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: -5,
+        },
+        shadowOpacity: 0.12,
+        shadowRadius: 5.5,
     },
     input: {
         flex: 1,
         marginRight: 16,
         padding: 8,
         borderColor: '#ccc',
+        backgroundColor: '#fff',
         borderWidth: 1,
         borderRadius: 20,
+        height: 40,
     },
     userMessageBubble: {
         backgroundColor: '#caebab',
@@ -158,7 +169,6 @@ const styles = StyleSheet.create({
         maxWidth: '80%',
         alignSelf: 'flex-end',
         marginRight: 10,
-        fontWeight: 'bold',
     },
     botMessageBubble: {
         backgroundColor: '#fff',
@@ -180,6 +190,19 @@ const styles = StyleSheet.create({
     POIContainer: {
         marginHorizontal: 20,
         marginVertical: 10,
+    },
+    sendButton: {
+        backgroundColor: '#729c70',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        height: 40,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 

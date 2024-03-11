@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { SERVER_URL } from '../../consts';
 import SecureStorageManager from '../../storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -63,13 +63,13 @@ const ForumComponent = ({ navigation }) => {
   if (forumsList === null) {
     return (
       <View style={styles.center}>
-        <Text>Sorry! We encountered an error fetching the forums.</Text>
+        <ActivityIndicator size="large" color="#2b2a29" />
       </View>
     );
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.root}>
+    <ScrollView style={styles.scrollView} contentContainerStyle={styles.root}>
       {forumsList.map((forum, i) => (
         <POIComponent
           key={forum.id}
@@ -89,6 +89,10 @@ const ForumComponent = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+      flex: 1,
+      backgroundColor: '#f2e7d6',
+  },
   root: {
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -100,6 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f2e7d6',
   },
 });
 
