@@ -69,6 +69,7 @@ const ForumCommentScreen = ({ route }) => {
         };
         
         setComments(prevComments => [...prevComments, optimisticComment]);
+        setNewComment('');
 
         try {
             const response = await fetch(`${SERVER_URL}/forum/addComment`, {
@@ -92,8 +93,6 @@ const ForumCommentScreen = ({ route }) => {
             Alert.alert("Error", "An error occurred while posting the comment.");
             setComments(prevComments => prevComments.filter(c => c !== optimisticComment));
         }
-
-        setNewComment('');
     };
 
     useEffect(() => {

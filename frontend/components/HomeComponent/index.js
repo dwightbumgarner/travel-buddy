@@ -28,8 +28,8 @@ const HomeScreen = ({ navigation }) => {
     MadimiOne: require('../../assets/fonts/MadimiOne-Regular.ttf'), 
   });
 
-  const tabSize = 22;
-  const focusedTabSize = 30;
+  const tabSize = 28;
+  const focusedTabSize = 32;
 
   useEffect(() => {
     const checkAuthToken = async () => {
