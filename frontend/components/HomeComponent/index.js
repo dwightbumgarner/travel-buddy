@@ -11,6 +11,7 @@ import UserDetailComponent from '../UserComponent';
 import UploadPhotoScreen from '../UploadPhotoComponent';
 import NearbyPOIComponent from "../NearbyPOIComponent";
 import ForumComponent from '../ForumComponent';
+import ChatComponent from '../ChatComponent';
 import ForumCommentComponent from '../ForumCommentComponent';
 import SecureStorageManager from '../../storage';
 import HeaderComponent from '../HeaderComponent';
@@ -44,14 +45,6 @@ const HomeScreen = ({ navigation }) => {
 
     checkAuthToken();
   }, []);
-
-  if (!fontsLoaded || loading) {
-    return (
-      <View style={styles.center}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
 
   const AuthFlowNavigator = () => (
     <Tab.Navigator
@@ -87,8 +80,8 @@ const HomeScreen = ({ navigation }) => {
   const ContentFlowNavigator = () => (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarActiveTintColor: 'green',
-        tabBarInactiveTintColor: 'black',
+        tabBarActiveTintColor: '#729c70',
+        tabBarInactiveTintColor: '#2b2a29',
         tabBarLabelStyle: { display: 'none' },
         headerShown: false,
         tabBarIcon: ({ color, size, focused }) => {
@@ -159,6 +152,14 @@ const HomeScreen = ({ navigation }) => {
               },
             }}
             component={ForumCommentComponent} />
+      <Stack.Screen 
+            name="ChatScreen"
+            options={{
+              header: ({ navigation }) => {
+                return <HeaderComponent showBack={true} navigation={navigation} />;
+              },
+            }}
+            component={ChatComponent} />
     </Stack.Navigator>
   );
 };

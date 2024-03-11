@@ -4,13 +4,14 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import { SERVER_URL } from '../../consts';
 import SecureStorageManager from '../../storage';
+import POIComponent from '../POIComponent';
 
-const ChatScreen = () => {
+const ChatScreen = ({ route }) => {
     const [messages, setMessages] = useState([]);
     const [userInput, setUserInput] = useState('');
-    const [detectedLandmark, setDetectedLandmark] = useState(null);
     const [authToken, setAuthToken] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { forumId, name, imageURL, rating } = route.params;
 
     const secureStorage = SecureStorageManager.getInstance();
     const scrollViewRef = useRef();
@@ -21,7 +22,6 @@ const ChatScreen = () => {
             setAuthToken(token);
 
             const landmark = await secureStorage.get('detectedLandmark');
-            setDetectedLandmark(landmark);
 
             const response = await fetch(SERVER_URL + "/ai/chat", {
                 method: 'POST',
@@ -30,13 +30,13 @@ const ChatScreen = () => {
                     'authentication': authToken,
                 },
                 body: JSON.stringify({
-                    conversation: [{ role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }],
+                    conversation: [{ role: 'assistant', content: `Your goal is to assist the user with information about ${landmark}. Send the user a brief welcome message from TravelBuddy (without emojis) and ask what the user wants to learn about this landmark.` }],
                 }),
             });
             const data = await response.json();
             console.log(data.response);
             if (data.response) {
-                setMessages(prevMessages => [...prevMessages, { role: 'user', content: `I'm a tourist at ${landmark}. Please give me a short guide.` }, { role: 'assistant', content: data.response }]);
+                setMessages(prevMessages => [...prevMessages, { role: 'assistant', content: data.response }]);
             }
         } catch (error) {
             console.log('Error fetching from storage:', error);
@@ -56,7 +56,7 @@ const ChatScreen = () => {
             Alert.alert('You typed nothing!');
             return;
         }
-
+        setUserInput('');
         console.log('sending message to AI');
         const conversation = messages.slice();
         conversation.push({ role: 'user', content: userInput });
@@ -89,6 +89,16 @@ const ChatScreen = () => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.POIContainer}>
+                <POIComponent
+                    key={forumId}
+                    name={name}
+                    imageURL={imageURL}
+                    rating={rating || 0}
+                    disabled={false}
+                    forumId={forumId}
+                />
+            </View>
             <ScrollView
                 contentContainerStyle={styles.scrollViewContainer}
                 ref={scrollViewRef}
@@ -119,6 +129,8 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         flex: 1,
+        backgroundColor: '#f2e7d6',
+        justifyContent: 'flex-end',
     },
     scrollViewContainer: {
         padding: 10,
@@ -128,6 +140,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 16,
         backgroundColor: '#fff',
+        paddingBottom: 40,
     },
     input: {
         flex: 1,
@@ -138,16 +151,17 @@ const styles = StyleSheet.create({
         borderRadius: 20,
     },
     userMessageBubble: {
-        backgroundColor: '#DCF8C6',
+        backgroundColor: '#caebab',
         padding: 10,
         borderRadius: 20,
         marginVertical: 5,
         maxWidth: '80%',
         alignSelf: 'flex-end',
         marginRight: 10,
+        fontWeight: 'bold',
     },
     botMessageBubble: {
-        backgroundColor: '#ECECEC',
+        backgroundColor: '#fff',
         padding: 10,
         borderRadius: 20,
         marginVertical: 5,
@@ -162,6 +176,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    POIContainer: {
+        marginHorizontal: 20,
+        marginVertical: 10,
     },
 });
 

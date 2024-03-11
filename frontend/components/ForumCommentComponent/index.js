@@ -215,7 +215,8 @@ const styles = StyleSheet.create({
         borderColor: '#cccccc',
     },
     POIContainer: {
-        margin: 10
+        marginHorizontal: 20,
+        marginVertical: 10,
     },
 });
 
