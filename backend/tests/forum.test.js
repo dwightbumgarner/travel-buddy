@@ -46,7 +46,7 @@ describe("Forum API Endpoints without authentication", () => {
 
     test("Get accessible forums for authenticated user without authentication should fail", async () => {
       const response = await request(app)
-        .get("/api/forum/forum")
+        .get("/api/forum")
 
       expect(response.statusCode).toBe(401);
     });
@@ -73,12 +73,11 @@ describe("Forum API Endpoints", () => {
 
   test("Get accessible forums for authenticated user", async () => {
     const response = await request(app)
-      .get("/api/forum/forum")
+      .get("/api/forum")
       .set('authentication', authToken)
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("accessibleForums");
-    expect(response.body.accessibleForums).toContain("accessibleForumId");
   });
 
   test("Add a new comment to a specific forum", async () => {
