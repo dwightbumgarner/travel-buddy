@@ -424,6 +424,235 @@
     
 
     
+    <h4 class="name" id="calculateDistance"><span class="type-signature"></span>calculateDistance<span class="signature">(lat1, lon1, lat2, lon2)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Calculates the distance (in kilometers) between two points on the Earth's surface
+using the Haversine formula.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>lat1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The latitude of the first point.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lon1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The longitude of the first point.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lat2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The latitude of the second point.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lon2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The longitude of the second point.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nearby.js.html">nearby.js</a>, <a href="nearby.js.html#line15">line 15</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The distance between the two points in kilometers.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="chatWithAI"><span class="type-signature"></span>chatWithAI<span class="signature">(req, res)</span><span class="type-signature"></span></h4>
     
 
@@ -573,6 +802,165 @@
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="deg2rad"><span class="type-signature"></span>deg2rad<span class="signature">(deg)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Converts degrees to radians.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>deg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The angle in degrees.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="nearby.js.html">nearby.js</a>, <a href="nearby.js.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The angle in radians.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1667,7 +2055,7 @@ Creates or updates forums related to detected landmarks if necessary.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="nearby.js.html">nearby.js</a>, <a href="nearby.js.html#line11">line 11</a>
+        <a href="nearby.js.html">nearby.js</a>, <a href="nearby.js.html#line43">line 43</a>
     </li></ul></dd>
     
 
@@ -2809,13 +3197,13 @@ Creates or updates forums related to detected landmarks if necessary.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addComment">addComment</a></li><li><a href="global.html#addOrUpdateForumRating">addOrUpdateForumRating</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#degreesToRadians">degreesToRadians</a></li><li><a href="global.html#detectLandmark">detectLandmark</a></li><li><a href="global.html#editUsernameByToken">editUsernameByToken</a></li><li><a href="global.html#generateToken">generateToken</a></li><li><a href="global.html#getAccessForums">getAccessForums</a></li><li><a href="global.html#getComment">getComment</a></li><li><a href="global.html#getNearbyPOIList">getNearbyPOIList</a></li><li><a href="global.html#getUsrByToken">getUsrByToken</a></li><li><a href="global.html#getUsrDetailByEmail">getUsrDetailByEmail</a></li><li><a href="global.html#haversineDistance">haversineDistance</a></li><li><a href="global.html#isLandmarkCloseToUser">isLandmarkCloseToUser</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#signin">signin</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addComment">addComment</a></li><li><a href="global.html#addOrUpdateForumRating">addOrUpdateForumRating</a></li><li><a href="global.html#calculateDistance">calculateDistance</a></li><li><a href="global.html#chatWithAI">chatWithAI</a></li><li><a href="global.html#deg2rad">deg2rad</a></li><li><a href="global.html#degreesToRadians">degreesToRadians</a></li><li><a href="global.html#detectLandmark">detectLandmark</a></li><li><a href="global.html#editUsernameByToken">editUsernameByToken</a></li><li><a href="global.html#generateToken">generateToken</a></li><li><a href="global.html#getAccessForums">getAccessForums</a></li><li><a href="global.html#getComment">getComment</a></li><li><a href="global.html#getNearbyPOIList">getNearbyPOIList</a></li><li><a href="global.html#getUsrByToken">getUsrByToken</a></li><li><a href="global.html#getUsrDetailByEmail">getUsrDetailByEmail</a></li><li><a href="global.html#haversineDistance">haversineDistance</a></li><li><a href="global.html#isLandmarkCloseToUser">isLandmarkCloseToUser</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#signin">signin</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 02:48:56 GMT+0000 (Coordinated Universal Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Tue Mar 12 2024 05:17:11 GMT+0000 (Coordinated Universal Time)
 </footer>
 
 <script> prettyPrint(); </script>
