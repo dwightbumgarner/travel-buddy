@@ -76,7 +76,7 @@ module.exports.detectLandmark = async (req, res) => {
         
         const landmarkWithCoords = landmarks.map((landmark, index) => {
             const landmarkCoords = coords[index];
-            const threshold = 15; // 15km
+            const threshold = 8; // 8km
             if (isLandmarkCloseToUser(latitude, longitude, landmarkCoords, threshold)) {
                 return { landmark, coords: landmarkCoords };
             }
