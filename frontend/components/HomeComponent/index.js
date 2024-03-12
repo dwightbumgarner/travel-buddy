@@ -94,7 +94,7 @@ const HomeScreen = ({ navigation }) => {
         name="UserDetail" 
         component={UserDetailComponent} 
         options={{
-          header: ({ navigation }) => <HeaderComponent showBack={true} navigation={navigation} />,
+          header: ({ navigation }) => <HeaderComponent showBack={true} showUser = {false} navigation={navigation} />,
         }}
       />
       <Stack.Screen 

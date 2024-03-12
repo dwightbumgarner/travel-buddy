@@ -123,6 +123,7 @@ const UserDetailComponent = ({ navigation }) => {
       <TouchableOpacity onPress={handleProfileImage}>
         <Image source={profileImage} style={styles.profileImage} />
       </TouchableOpacity>
+      <Text style={styles.label}>Name</Text>
       <TextInput
         style={styles.input}
         value={userName}
@@ -133,6 +134,7 @@ const UserDetailComponent = ({ navigation }) => {
         returnKeyType="done"
         onEndEditing={() => handleNameUpdate(userName)}
       />
+      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
         value={userEmail}
@@ -184,6 +186,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  label: {
+    fontSize: 16,
+    marginBottom: 5, 
+  }
 });
 
 export default UserDetailComponent;
