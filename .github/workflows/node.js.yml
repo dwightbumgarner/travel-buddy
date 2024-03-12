@@ -56,17 +56,6 @@ jobs:
         kill $SERVER_PID
       shell: bash
 
-    # Backend
-    - name: Install and build backend
-      run: |
-        cd backend
-        npm ci
-        npm run start &
-        SERVER_PID=$!
-        sleep 3
-        kill $SERVER_PID
-      shell: bash
-
     - name: Test backend
       run: |
         cd backend
