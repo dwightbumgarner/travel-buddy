@@ -95,7 +95,7 @@ const ChatScreen = ({ route }) => {
                     name={name}
                     imageURL={imageURL}
                     rating={rating || 0}
-                    disabled={false}
+                    disabled={true}
                     forumId={forumId}
                 />
             </View>
