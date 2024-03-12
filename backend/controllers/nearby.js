@@ -3,6 +3,38 @@ const firebaseInstance = FirebaseSingleton.getInstance();
 const db = firebaseInstance.getDatabase();
 
 /**
+ * Calculates the distance (in kilometers) between two points on the Earth's surface
+ * using the Haversine formula.
+ *
+ * @param {number} lat1 - The latitude of the first point.
+ * @param {number} lon1 - The longitude of the first point.
+ * @param {number} lat2 - The latitude of the second point.
+ * @param {number} lon2 - The longitude of the second point.
+ * @returns {number} The distance between the two points in kilometers.
+ */
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in kilometers
+}
+
+/**
+ * Converts degrees to radians.
+ *
+ * @param {number} deg - The angle in degrees.
+ * @returns {number} The angle in radians.
+ */
+function deg2rad(deg) {
+    return deg * (Math.PI / 180);
+}
+
+/**
  * Fetches a list of nearby Points of Interest (POIs) based on the user's location.
  *
  * @param {object} req - The request object, containing the latitude and longitude in the body.
@@ -18,9 +50,10 @@ module.exports.getNearbyPOIList = async (req, res) => {
         const allForums = querySnapshot.docs.map(doc => doc.data());
         const nearbyForums = allForums
             .map(forum => {
-                const distance = Math.sqrt(Math.pow(forum.lat - latitude, 2) + Math.pow(forum.lon - longitude, 2));
+                const distance = calculateDistance(latitude, longitude, forum.lat, forum.lon);
                 return { ...forum, distance };
             })
+            .filter(forum => forum.distance < 15)
             .sort((a, b) => a.distance - b.distance)
             .slice(0, 5);
 
