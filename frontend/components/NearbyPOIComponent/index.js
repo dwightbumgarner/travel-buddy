@@ -4,7 +4,7 @@ import * as Location from 'expo-location';
 
 import { SERVER_URL } from '../../consts';
 import SecureStorageManager from '../../storage';
-import POIComponent from '../POIComponent'; // Ensure this path is correct for your project structure
+import POIComponent from '../POIComponent';
 
 const NearbyPOIScreen = ({ navigation }) => {
     const [POIList, setPOIList] = useState([]);
