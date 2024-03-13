@@ -47,6 +47,7 @@ const UserDetailComponent = ({ navigation }) => {
       await secureStorage.delete('userName');
       await secureStorage.delete('userEmail');
       await secureStorage.delete('detectedLandmark');
+      await secureStorage.delete('profileImage');
       navigation.navigate('login');
     } catch (error) {
       console.error(error);
