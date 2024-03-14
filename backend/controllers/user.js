@@ -11,7 +11,7 @@ const db = firebaseInstance.getDatabase();
  * @returns {string} A JWT token that encodes the user's email and id.
  */
 const generateToken = (user) => {
-  return jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+  return jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET || "jwt_secret", { expiresIn: '7d' });
 };
 
 /**
