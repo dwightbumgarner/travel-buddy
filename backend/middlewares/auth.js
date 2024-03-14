@@ -6,7 +6,7 @@ module.exports.verifyAuthentication = async (req, res, next) => {
   console.log('auth middleware for', {token});
 
   if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    jwt.verify(token, process.env.JWT_SECRET || "jwt_secret", (err, user) => {
       if (err) {
         console.log('jwt token authentication failed for', {token});
         res.status(403).json({ message: 'Authentication Failed' });

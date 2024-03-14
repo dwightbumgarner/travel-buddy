@@ -7,7 +7,7 @@ const openai = require('openai')
 class ChatGPTAPISingleton {
     constructor() {
         const CONFIG = new openai.Configuration({
-            apiKey: process.env.OPENAI_API_KEY,
+            apiKey: process.env.OPENAI_API_KEY || "",
         });
 
         if (!ChatGPTAPISingleton.client) {

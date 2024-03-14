@@ -4,8 +4,8 @@ class GCPLandmarkSingleton {
     constructor() {
         const CONFIG = {
             credentials: {
-                private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n'),
-                client_email: process.env.GCP_CLIENT_EMAIL,
+                private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, '\n') || "",
+                client_email: process.env.GCP_CLIENT_EMAIL || "",
             }
         };
 
