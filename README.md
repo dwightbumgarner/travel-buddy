@@ -1,5 +1,11 @@
-# TravelBuddy: Your Pocket Tour Guide
-Welcome to the official GitHub page for TravelBuddy, your innovative mobile application designed to redefine your travel experience. By combining the power of generative AI with advanced landmark detection technology, TravelBuddy offers you an on-demand, interactive guide experience like never before. Imagine having a personal tour guide in your pocket, ready to provide you with fascinating stories, insights, and local tips with just a few taps on your screen.
+# TravelBuddy: A Tour Guide in your Pocket
+Travel Buddy is a mobile app designed to redefine your travel experience. By combining the power of generative AI with image-based landmark detection, TravelBuddy offers you an on-demand, interactive tour guide experience.
+
+## Demo
+
+Click the image below to watch the demo video for TravelBuddy! It can also be found here: https://www.youtube.com/watch?v=SOnoVV6EN8Q
+
+[![Travel Buddy Demo Video](https://img.youtube.com/vi/SOnoVV6EN8Q/0.jpg)](https://www.youtube.com/watch?v=SOnoVV6EN8Q)
 
 ## Getting Started
 
@@ -17,7 +23,7 @@ Welcome to the official GitHub page for TravelBuddy, your innovative mobile appl
     Start by cloning the repository to your local machine.
 
     ```
-    git clone https://github.com/RandomY-2/CS130.git
+    git clone https://github.com/dwightbumgarner/travel-buddy.git
     ```
 
 2. **Set Up the Backend**
@@ -39,7 +45,7 @@ Welcome to the official GitHub page for TravelBuddy, your innovative mobile appl
     ngrok http http://localhost:8000
     ```
 
-    Follow the signup instructions if it's your first time using ngrok.
+    Follow the sign up instructions if it's your first time using ngrok.
 
 4. **Configure the Frontend**
 
